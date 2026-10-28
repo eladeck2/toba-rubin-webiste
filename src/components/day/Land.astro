@@ -1,0 +1,44 @@
+---
+/* Two soft hills with a few far-off trees. Fills follow --hill-far / --hill-near. */
+---
+<div class="land" data-land>
+  <svg viewBox="0 0 1600 420" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    <path class="land__far" d="M0 96 C180 46 400 52 610 92 C800 128 980 46 1220 56 C1390 63 1520 92 1600 86 V420 H0 Z" />
+    <path class="land__far-line" d="M0 96 C180 46 400 52 610 92 C800 128 980 46 1220 56 C1390 63 1520 92 1600 86" />
+    <g class="land__trees">
+      <path d="M1102 64 L1102 46 M1102 52 C1094 48 1094 36 1102 30 C1110 36 1110 48 1102 52" />
+      <path d="M1126 61 L1126 48 M1126 52 C1120 48 1120 39 1126 35 C1132 39 1132 48 1126 52" />
+      <path d="M1148 59 L1148 40 M1148 46 C1139 42 1139 28 1148 21 C1157 28 1157 42 1148 46" />
+      <path d="M318 62 L318 46 M318 51 C311 47 311 36 318 31 C325 36 325 47 318 51" />
+      <path d="M340 64 L340 51 M340 55 C334 52 334 43 340 39 C346 43 346 52 340 55" />
+    </g>
+    <path class="land__near" d="M0 176 C230 132 470 142 720 180 C960 216 1200 136 1600 156 V420 H0 Z" />
+    <path class="land__near-line" d="M0 176 C230 132 470 142 720 180 C960 216 1200 136 1600 156" />
+  </svg>
+</div>
+
+<style>
+  .land {
+    position: absolute;
+    left: -5%;
+    right: -5%;
+    bottom: -60px;
+    top: calc(100% - var(--card-zone) - 5rem);
+    will-change: transform;
+  }
+  .land svg { width: 100%; height: 100%; }
+  .land__far { fill: var(--hill-far); }
+  .land__near { fill: var(--hill-near); }
+  .land__far-line, .land__near-line, .land__trees path {
+    fill: none;
+    stroke: var(--art-i);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+    stroke-linecap: round;
+    opacity: 0.45;
+  }
+  .land__trees path { stroke: var(--art-l); opacity: 0.8; }
+  @media (min-width: 960px) {
+    .land { top: 62%; }
+  }
+</style>

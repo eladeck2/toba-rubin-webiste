@@ -1,0 +1,27 @@
+---
+/* Desktop only: one leafy branch drifting in from the right edge, nearest the viewer. */
+---
+<div class="fg" data-fg aria-hidden="true">
+  <svg class="art" viewBox="0 0 320 420">
+    <g class="a-l sway" style="--sway-dur: 8s">
+      <path d="M330 30 C268 84 236 160 222 250 C214 304 216 360 226 418" />
+      <path d="M300 64 C276 52 254 56 238 70 C256 84 282 84 300 64 Z" />
+      <path d="M296 70 L250 70" class="faint" />
+      <path d="M262 124 C276 98 296 88 318 92 C310 116 288 130 262 124 Z" />
+      <path d="M266 120 L310 96" class="faint" />
+      <path d="M244 178 C220 160 196 160 178 172 C198 192 224 194 244 178 Z" />
+      <path d="M240 178 L186 174" class="faint" />
+      <path d="M234 232 C248 206 270 196 294 200 C284 226 260 238 234 232 Z" />
+      <path d="M238 228 L286 204" class="faint" />
+      <path d="M224 296 C200 280 178 282 162 296 C182 314 206 312 224 296 Z" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .fg { display: none; }
+  @media (min-width: 960px) {
+    .fg { display: block; position: absolute; right: -40px; bottom: -40px; width: 300px; height: 400px; will-change: transform; }
+    .fg svg { width: 100%; height: 100%; }
+  }
+</style>

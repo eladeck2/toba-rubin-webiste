@@ -1,0 +1,143 @@
+---
+import { nav, site } from '../config/site';
+const items = nav.filter((item) => item.ready);
+const path = Astro.url.pathname;
+---
+
+<header class="site-header" data-header>
+  <div class="site-header__inner">
+    <a class="wordmark" href="/" aria-label={`${site.name}, home`}>
+      <span class="wordmark__name">Tova</span><span class="wordmark__last"> Rubin</span>
+    </a>
+
+    {items.length > 0 && (
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          {items.map((item) => (
+            <li>
+              <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    <a class="btn site-header__cta" href="/#join" data-header-cta>Join the table</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    height: var(--header-h);
+    padding-top: env(safe-area-inset-top);
+    color: var(--ink);
+    transition: color 600ms ease, background-color 400ms ease, box-shadow 400ms ease;
+  }
+  .site-header[data-solid] {
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .site-header[data-tone='dark'] { color: #F1E8DC; }
+  .site-header[data-solid][data-tone='dark'] {
+    background: rgb(22 26 41 / 0.82);
+    box-shadow: 0 1px 0 rgb(241 232 220 / 0.1);
+  }
+  .site-header__inner {
+    height: 100%;
+    max-width: 88rem;
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-variation-settings: 'SOFT' 100, 'WONK' 1;
+    font-size: 1.5rem;
+    font-weight: 420;
+    letter-spacing: -0.015em;
+    color: inherit;
+    text-decoration: none;
+    margin-right: auto;
+    line-height: 1;
+  }
+  .wordmark__last { font-weight: 300; }
+  .site-nav ul { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
+  .site-nav a { color: inherit; text-decoration: none; font-size: 0.9375rem; }
+  .site-nav a[aria-current='page'] { text-decoration: underline; text-underline-offset: 0.35em; }
+  @media (max-width: 860px) { .site-nav { display: none; } }
+
+  .site-header__cta {
+    min-height: 44px;
+    padding: 0 1.25rem;
+    font-size: 0.9375rem;
+    transition:
+      opacity var(--dur-leave) var(--ease-leave),
+      visibility 0s linear var(--dur-leave),
+      transform var(--dur-press) var(--ease-out),
+      box-shadow var(--dur-press) var(--ease-out);
+  }
+  @media (min-width: 768px) { .site-header__cta { min-height: 48px; padding: 0 1.5rem; } }
+  /* At most one button per screen: step aside when the sign-up itself is in view. */
+  .site-header__cta[data-hidden] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .site-header__cta:not([data-hidden]) {
+    transition:
+      opacity var(--dur-enter) var(--ease-enter),
+      visibility 0s,
+      transform var(--dur-press) var(--ease-out),
+      box-shadow var(--dur-press) var(--ease-out);
+  }
+</style>
+
+<script>
+  function initHeader() {
+    const header = document.querySelector<HTMLElement>('[data-header]');
+    const cta = document.querySelector<HTMLElement>('[data-header-cta]');
+    if (!header || !cta) return;
+
+    // Take tone from whatever sits under the header: the story stage stays
+    // transparent over its sky; other sections get a soft solid bar.
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const y = header.offsetHeight + 2;
+      const under = document.elementFromPoint(window.innerWidth / 2, y) as HTMLElement | null;
+      const toned = under?.closest<HTMLElement>('[data-tone]');
+      header.dataset.tone = toned?.dataset.tone === 'dark' ? 'dark' : 'light';
+      const inStage = !!under?.closest('[data-stage]');
+      header.toggleAttribute('data-solid', window.scrollY > 8 && !inStage);
+    };
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    document.addEventListener('story:active', schedule);
+
+    const join = document.getElementById('join');
+    let io: IntersectionObserver | null = null;
+    if (join) {
+      io = new IntersectionObserver(
+        ([entry]) => cta.toggleAttribute('data-hidden', entry.isIntersecting),
+        { rootMargin: '0px 0px -25% 0px' },
+      );
+      io.observe(join);
+    }
+    document.addEventListener('astro:before-swap', () => {
+      io?.disconnect();
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      document.removeEventListener('story:active', schedule);
+    }, { once: true });
+  }
+  document.addEventListener('astro:page-load', initHeader);
+</script>

@@ -1,0 +1,200 @@
+---
+import { getEntry } from 'astro:content';
+import Chair from './scenes/Chair.astro';
+import { signup, footerLinks } from '../config/site';
+
+const closing = await getEntry('moments', '07-closing');
+// PENDING TOVA'S APPROVAL: "There's a seat for you." comes verbatim from the closing moment.
+const heading = closing?.data.wisdom ?? "There's a seat for you.";
+const privacy = footerLinks.find((l) => l.href === '/privacy/' && l.ready);
+---
+
+<section class="join" id="join" aria-labelledby="join-title" data-tone="dark" data-join-section data-sound={JSON.stringify(closing?.data.sound ?? { birds: 0, simmer: 0, crickets: 0.8 })}>
+  <div class="join__inner">
+    <div class="join__art">
+      <Chair />
+    </div>
+
+    <div class="join__text">
+      <p class="eyebrow join__eyebrow">Under the stars</p>
+      <h2 class="join__title" id="join-title">{heading}</h2>
+      <p class="join__lede">
+        A monthly letter from my kitchen: one recipe, one reflection, one small thing to try.
+        Join now and I’ll send you <em>{signup.giftName}</em>, three favorite recipes, as a gift.
+      </p>
+
+      <div class="join__form-wrap" data-join-wrap>
+        <form
+          class="join__form"
+          name={signup.formName}
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="company"
+          data-join-form
+          novalidate
+        >
+          <input type="hidden" name="form-name" value={signup.formName} />
+          <p class="visually-hidden" aria-hidden="true">
+            <label>Leave this empty <input name="company" tabindex="-1" autocomplete="off" /></label>
+          </p>
+          <label class="join__label" for="join-email">Your email</label>
+          <div class="join__row">
+            <input
+              class="join__input"
+              id="join-email"
+              type="email"
+              name="email"
+              inputmode="email"
+              autocomplete="email"
+              required
+              aria-describedby="join-privacy"
+            />
+            <button class="btn join__btn" type="submit">Join the table</button>
+          </div>
+          <p class="join__error" id="join-error" role="alert" hidden></p>
+          <p class="join__privacy" id="join-privacy">
+            {signup.privacyLine}
+            {privacy && <> <a href={privacy.href}>Privacy</a></>}
+          </p>
+        </form>
+
+        <div class="join__thanks" data-join-thanks hidden>
+          <svg class="art join__thanks-art" viewBox="0 0 200 120" aria-hidden="true">
+            <g class="a-q steam">
+              <path d="M88 52 C82 42 94 36 88 24" /><path d="M100 50 C95 39 106 32 101 18" /><path d="M112 52 C107 42 118 36 113 26" />
+            </g>
+            <g class="a-t">
+              <path d="M60 70 C60 62 140 62 140 70 C140 78 60 78 60 70 Z" />
+              <path d="M60 71 C63 92 80 102 100 102 C120 102 137 92 140 71" />
+            </g>
+            <g class="a-i"><path d="M30 106 C80 104 120 107 170 105" /></g>
+          </svg>
+          <h3 class="join__thanks-title" tabindex="-1" data-join-thanks-title>Thank you. Your seat is saved.</h3>
+          <p>Check your inbox and confirm your email. Your gift follows right after.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .join {
+    --ink: #F1E8DC;
+    --ink-soft: #C3BBC6;
+    --surface: #232A40;
+    --line: rgb(241 232 220 / 0.16);
+    --teal-text: #8ED9D4;
+    --terracotta-text: #F2A18A;
+    position: relative;
+    color: var(--ink);
+    background: linear-gradient(to bottom, #1A1F30 0%, #141827 100%);
+    padding: var(--section-pad) var(--gutter);
+    overflow: hidden;
+  }
+  @media (prefers-color-scheme: dark) {
+    .join { background: linear-gradient(to bottom, #151927 0%, #0F121D 100%); }
+  }
+  .join__inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .join__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .join__art { order: 2; }
+  }
+  .join__art { max-width: 30rem; width: 100%; justify-self: center; }
+  .join__art :global(svg) { width: 100%; height: auto; }
+
+  .join__text { display: grid; gap: var(--space-6); max-width: 34rem; }
+  .join__eyebrow { color: var(--teal-text); }
+  .join__title { font-size: var(--step-h2); font-weight: 360; letter-spacing: -0.02em; }
+  .join__lede { color: var(--ink-soft); font-size: var(--step-body); max-width: 40ch; }
+  .join__lede em { color: var(--ink); }
+
+  .join__form { display: grid; gap: var(--space-3); }
+  .join__label { font-weight: 600; font-size: var(--step-small); }
+  .join__row { display: grid; gap: var(--space-3); }
+  @media (min-width: 520px) {
+    .join__row { grid-template-columns: minmax(0, 1fr) auto; }
+  }
+  .join__input {
+    min-height: 52px;
+    width: 100%;
+    padding: 0 1.25rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(241 232 220 / 0.32);
+    background: rgb(255 255 255 / 0.06);
+    color: var(--ink);
+    font: inherit;
+    font-size: 1.0625rem;
+    transition: border-color var(--dur-press) var(--ease-out), background-color var(--dur-press) var(--ease-out);
+  }
+  .join__input:hover { border-color: rgb(241 232 220 / 0.5); }
+  .join__input:focus { outline: 3px solid var(--teal); outline-offset: 2px; border-color: transparent; background: rgb(255 255 255 / 0.1); }
+  .join__input[aria-invalid='true'] { border-color: #F2A18A; }
+  .join__btn { min-height: 52px; }
+  .join__error { color: #F6B7A4; font-size: var(--step-small); }
+  .join__privacy { font-size: 0.875rem; color: var(--ink-soft); }
+  .join__privacy a { color: var(--teal-text); }
+
+  .join__thanks { display: grid; gap: var(--space-3); justify-items: start; }
+  .join__thanks-art { width: 9rem; height: auto; }
+  .join__thanks-title { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); font-weight: 380; }
+  .join__thanks-title:focus { outline: none; }
+  .join__thanks[data-show] { animation: thanks-in var(--dur-enter) var(--ease-enter); }
+  @keyframes thanks-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>
+
+<script>
+  function initJoin() {
+    const form = document.querySelector<HTMLFormElement>('[data-join-form]');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = '1';
+    const input = form.querySelector<HTMLInputElement>('input[type=email]')!;
+    const error = form.querySelector<HTMLElement>('#join-error')!;
+    const thanks = document.querySelector<HTMLElement>('[data-join-thanks]')!;
+    const thanksTitle = document.querySelector<HTMLElement>('[data-join-thanks-title]')!;
+
+    const valid = () => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
+    const show = (msg: string) => {
+      error.textContent = msg;
+      error.hidden = !msg;
+      input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      input.setAttribute('aria-describedby', msg ? 'join-error join-privacy' : 'join-privacy');
+    };
+
+    // Gentle validation: only when the visitor leaves the field.
+    input.addEventListener('blur', () => {
+      if (input.value.trim() && !valid()) show('That email doesn’t look quite right. Could you check it?');
+    });
+    input.addEventListener('input', () => { if (!error.hidden && valid()) show(''); });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!valid()) {
+        show(input.value.trim() ? 'That email doesn’t look quite right. Could you check it?' : 'Please add your email so I can save your seat.');
+        input.focus();
+        return;
+      }
+      const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      button.disabled = true;
+      try {
+        const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString();
+        const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+        if (!res.ok) throw new Error(String(res.status));
+        form.hidden = true;
+        thanks.hidden = false;
+        thanks.toggleAttribute('data-show', true);
+        thanksTitle.focus();
+      } catch {
+        show('Something went wrong on my side. Please try again in a moment.');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+  document.addEventListener('astro:page-load', initJoin);
+</script>

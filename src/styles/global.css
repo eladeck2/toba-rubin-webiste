@@ -1,0 +1,297 @@
+/* Tokens from docs/design.md → Notes for the builder → Design tokens. */
+
+@property --sky-top { syntax: '<color>'; inherits: true; initial-value: #F6D8C4; }
+@property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: #FBF5EC; }
+@property --hill-far { syntax: '<color>'; inherits: true; initial-value: #EBCDB9; }
+@property --hill-near { syntax: '<color>'; inherits: true; initial-value: #E4C7AE; }
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #FBF5EC;
+  --surface: #FFFDF8;
+  --ink: #2B2622;
+  --ink-soft: #6B5F55;
+  --terracotta: #C8452B;
+  --terracotta-text: #A9361F;
+  --teal: #1A9A9A;
+  --teal-text: #137373;
+  --leaf: #7A9A5B;
+  --line: rgb(43 38 34 / 0.12);
+  --on-accent: #FFFFFF;
+
+  /* line art on a dark sky */
+  --night-terracotta: #E5846A;
+  --night-teal: #6FC9C4;
+  --night-leaf: #9DBE7C;
+  --night-ink: #E9DFD2;
+
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-body: 'Nunito Sans Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --step-eyebrow: 0.8125rem;
+  --step-lede: clamp(1.1875rem, 1.05rem + 0.6vw, 1.4375rem);
+  --step-title: clamp(2.5rem, 1.6rem + 4vw, 4.75rem);
+  --step-h2: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  --step-wisdom: clamp(1.5rem, 1.2rem + 1.3vw, 2.25rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --section-pad: clamp(4rem, 8vw, 9rem);
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --measure: 62ch;
+
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 1px 2px rgb(60 40 20 / 0.06), 0 12px 32px rgb(60 40 20 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(60 40 20 / 0.08), 0 16px 36px rgb(60 40 20 / 0.12);
+
+  --ease-out: ease-out;
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-leave: cubic-bezier(0.4, 0, 1, 1);
+  --dur-press: 200ms;
+  --dur-enter: 700ms;
+  --dur-leave: 300ms;
+
+  --header-h: 4.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1E1814;
+    --surface: #2A221D;
+    --ink: #F3EADF;
+    --ink-soft: #BFB2A4;
+    --terracotta: #E5684D;
+    --terracotta-text: #F08A6F;
+    --teal: #4FC2BE;
+    --teal-text: #7FD6D1;
+    --leaf: #9DBE7C;
+    --line: rgb(243 234 223 / 0.14);
+    /* Doc token #E5684D is the dark-mode button fill; deep ink keeps text AA on it. */
+    --on-accent: #1E1814;
+    --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.2), 0 12px 32px rgb(0 0 0 / 0.28);
+    --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.25), 0 16px 36px rgb(0 0 0 / 0.35);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-body);
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Paper grain: faint fractal noise, ~4% */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .24 0 0 0 0 .16 0 0 0 0 .08 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+@media (prefers-color-scheme: dark) {
+  body::before { mix-blend-mode: screen; opacity: 0.035; }
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0; text-wrap: pretty; }
+
+a {
+  color: var(--teal-text);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-press) var(--ease-out);
+}
+a:hover { color: var(--ink); }
+
+img, svg { display: block; max-width: 100%; }
+
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+::selection { background: color-mix(in srgb, var(--teal) 28%, transparent); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -4rem;
+  z-index: 200;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-soft);
+}
+.skip-link:focus { top: var(--space-4); }
+
+/* Buttons: 48px pills, terracotta fill */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--terracotta);
+  color: var(--on-accent);
+  font: 600 1rem/1 var(--font-body);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform var(--dur-press) var(--ease-out),
+    box-shadow var(--dur-press) var(--ease-out),
+    background-color var(--dur-press) var(--ease-out);
+}
+.btn:hover { color: var(--on-accent); transform: translateY(-1px); box-shadow: var(--shadow-lift); }
+.btn:active { transform: translateY(0); box-shadow: none; }
+.btn:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; border-radius: var(--radius-pill); }
+
+.eyebrow {
+  font: 700 var(--step-eyebrow)/1.3 var(--font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* View transitions: a 300 ms crossfade, like turning a page */
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 300ms; }
+
+/* ── Line art ─────────────────────────────────────────────── */
+.art { overflow: visible; }
+.art path, .art ellipse, .art circle, .art line, .art polyline {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 900ms ease, fill 900ms ease;
+}
+:root {
+  --art-t: var(--terracotta);
+  --art-q: var(--teal);
+  --art-l: var(--leaf);
+  --art-i: color-mix(in srgb, var(--ink) 62%, transparent);
+  --art-glow: #F2B45C;
+}
+[data-tone='dark'] {
+  --art-t: var(--night-terracotta);
+  --art-q: var(--night-teal);
+  --art-l: var(--night-leaf);
+  --art-i: color-mix(in srgb, var(--night-ink) 70%, transparent);
+}
+.a-t { stroke: var(--art-t); }
+.a-q { stroke: var(--art-q); }
+.a-l { stroke: var(--art-l); }
+.a-i { stroke: var(--art-i); }
+.art .faint, .art g.faint path { opacity: 0.55; }
+
+.art .glow circle { fill: var(--art-glow); stroke: none; opacity: 0.85; }
+.art .flame path { fill: var(--art-glow); stroke: color-mix(in srgb, var(--art-t) 70%, transparent); stroke-width: 1; }
+.art .halo { fill: var(--art-glow); stroke: none !important; opacity: 0.16; }
+.art .fireflies circle { fill: #F4D27A; stroke: none; }
+
+/* Ambient loops (3–8 s). Paused for reduced motion and while offscreen. */
+@keyframes steam-rise {
+  0% { stroke-dashoffset: 0; opacity: 0; }
+  20% { opacity: 0.9; }
+  80% { opacity: 0.5; }
+  100% { stroke-dashoffset: -120; opacity: 0; }
+}
+.art .steam path {
+  stroke-dasharray: 60 60;
+  animation: steam-rise 4.8s ease-in-out infinite;
+}
+.art .steam path:nth-child(2) { animation-delay: -1.6s; animation-duration: 5.4s; }
+.art .steam path:nth-child(3) { animation-delay: -3.1s; animation-duration: 5s; }
+
+@keyframes sway { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
+.art .sway {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: sway var(--sway-dur, 6s) ease-in-out infinite;
+}
+@keyframes drift {
+  0% { transform: translate(0, -6px) rotate(0); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translate(14px, 46px) rotate(40deg); opacity: 0; }
+}
+.art .drift path { transform-box: fill-box; transform-origin: center; animation: drift 7s ease-in-out infinite; }
+.art .drift path:nth-child(2) { animation-delay: -3.5s; }
+
+@keyframes flicker { 0%, 100% { transform: scale(1, 1); } 40% { transform: scale(0.94, 1.06); } 70% { transform: scale(1.04, 0.96); } }
+.art .flame path { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker 3.2s ease-in-out infinite; }
+@keyframes glow-breathe { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.2; } }
+.art .halo { animation: glow-breathe 4s ease-in-out infinite; }
+@keyframes firefly { 0%, 100% { opacity: 0; } 50% { opacity: 0.95; } }
+.art .fireflies circle { animation: firefly 4s ease-in-out infinite; }
+.art .fireflies circle:nth-child(2n) { animation-duration: 5.5s; animation-delay: -2s; }
+.art .fireflies circle:nth-child(3n) { animation-duration: 7s; animation-delay: -4s; }
+
+.paused .art *, .art.paused * { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .art .steam path { animation: none; stroke-dasharray: none; opacity: 0.7; }
+  .art .sway, .art .flame path, .art .halo { animation: none; }
+  .art .drift path { animation: none; opacity: 0; }
+  .art .fireflies circle { animation: none; opacity: 0.7; }
+}

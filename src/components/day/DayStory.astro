@@ -1,0 +1,379 @@
+---
+/**
+ * A day in a life: a sticky stage inside a tall scroll track. Every moment is
+ * real HTML in reading order (heading, wisdom, tip), so the story reads fine
+ * with no JavaScript; the engine in src/scripts/day-engine.ts layers the
+ * scroll-linked sky, sun, moon and scene crossfades on top.
+ */
+import { getCollection } from 'astro:content';
+import { skies } from '../../config/sky';
+import Window from '../scenes/Window.astro';
+import Kitchen from '../scenes/Kitchen.astro';
+import Walk from '../scenes/Walk.astro';
+import Desk from '../scenes/Desk.astro';
+import Tea from '../scenes/Tea.astro';
+import Table from '../scenes/Table.astro';
+import Night from '../scenes/Night.astro';
+import Celestial from './Celestial.astro';
+import Land from './Land.astro';
+import Garden from './Garden.astro';
+import Foreground from './Foreground.astro';
+
+const all = (await getCollection('moments')).sort((a, b) => a.data.order - b.data.order);
+const story = all.filter((m) => m.data.kind !== 'closing');
+
+const scenes = { window: Window, kitchen: Kitchen, walk: Walk, desk: Desk, tea: Tea, table: Table, night: Night } as const;
+
+const engineData = {
+  moments: story.map((m) => ({ id: m.id, sky: m.data.sky, sound: m.data.sound })),
+  skies,
+};
+
+const slug = (id: string) => id.replace(/^\d+-/, '');
+const first = skies.light[story[0].data.sky];
+---
+
+<section
+  class="day"
+  aria-labelledby="day-title"
+  data-day
+  style={`--n: ${story.length}; --sky-top: ${first.top}; --sky-bottom: ${first.bottom}; --hill-far: ${first.hillFar}; --hill-near: ${first.hillNear};`}
+>
+  <h2 id="day-title" class="visually-hidden">A day in a life</h2>
+  <script type="application/json" data-day-data set:html={JSON.stringify(engineData)} />
+
+  <div class="day__track">
+    <div class="day__stage" data-stage data-tone="light" data-sky="dawn">
+      <div class="day__art" aria-hidden="true">
+        <div class="day__sky"></div>
+        <Celestial />
+        <Land />
+        <Garden />
+        <div class="day__scenes">
+          {story.map((m, i) => {
+            const Scene = scenes[m.data.scene as keyof typeof scenes];
+            return (
+              <div class="day__scene" data-scene={i} style={i === 0 ? 'opacity: 1' : 'opacity: 0'}>
+                <Scene />
+              </div>
+            );
+          })}
+        </div>
+        <Foreground />
+      </div>
+
+      <ol class="day__moments" data-moments>
+        {story.map((m, i) => {
+          const d = m.data;
+          return (
+            <li class="moment" id={`moment-${slug(m.id)}`} data-moment={i} data-active={i === 0 ? '' : undefined}>
+              <article class="moment__card" aria-labelledby={`moment-${slug(m.id)}-title`}>
+                <h3 class="moment__heading" id={`moment-${slug(m.id)}-title`}>
+                  <span class="moment__area">{d.area}</span>
+                  <span class="moment__time">{d.title}</span>
+                </h3>
+                {/* PENDING TOVA'S APPROVAL: wisdom text comes verbatim from src/content/moments (approved: false). */}
+                {d.quote ? (
+                  <figure class="moment__figure">
+                    <blockquote class="moment__wisdom"><p>{d.wisdom}</p></blockquote>
+                    {d.attribution && <figcaption class="moment__source">{d.attribution}</figcaption>}
+                  </figure>
+                ) : (
+                  <>
+                    <p class="moment__wisdom">{d.wisdom}</p>
+                    {d.source && <p class="moment__source">{d.source}</p>}
+                  </>
+                )}
+                {d.kind === 'opening' ? (
+                  <p class="moment__scroll">
+                    <span>{d.tryToday}</span>
+                    <svg viewBox="0 0 16 24" aria-hidden="true"><path d="M8 3 V20 M2.5 14.5 L8 20 L13.5 14.5" /></svg>
+                  </p>
+                ) : (
+                  <button class="moment__try" type="button" aria-pressed="false" data-try={slug(m.id)}>
+                    <svg class="moment__tick" viewBox="0 0 28 28" aria-hidden="true">
+                      <circle cx="14" cy="14" r="11" />
+                      <path d="M9 14.5 L12.5 18 L19 10.5" />
+                    </svg>
+                    <span class="moment__try-text">
+                      <span class="moment__try-label">Try today</span>
+                      <span>{d.tryToday}</span>
+                    </span>
+                  </button>
+                )}
+              </article>
+            </li>
+          );
+        })}
+      </ol>
+
+      <nav class="day__dots" aria-label="Moments of the day">
+        <ol>
+          {story.map((m, i) =>
+            m.data.kind === 'moment' ? (
+              <li>
+                <button type="button" data-dot={i} aria-label={`${m.data.area}: ${m.data.title}`}>
+                  <span></span>
+                </button>
+              </li>
+            ) : null,
+          )}
+        </ol>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<style>
+  .day { position: relative; }
+
+  /* ── Without JavaScript: a calm, readable list ───────────────── */
+  .day__art, .day__dots { display: none; }
+  .day__moments {
+    list-style: none;
+    margin: 0 auto;
+    padding: var(--section-pad) var(--gutter);
+    max-width: 40rem;
+    display: grid;
+    gap: var(--space-12);
+  }
+
+  /* ── With JavaScript: the sticky stage ──────────────────────── */
+  :global(.js) .day__track { height: calc(var(--n) * 100svh); }
+  :global(.js) .day__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    color: var(--ink);
+    --card-zone: calc(var(--card-h, 16rem) + 5.25rem + env(safe-area-inset-bottom));
+  }
+  :global(.js) .day__art { display: block; position: absolute; inset: 0; }
+  :global(.js) .day__dots { display: block; }
+
+  .day__sky {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-bottom) 72%);
+  }
+
+  .day__scenes {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    top: calc(var(--header-h) + 0.5rem);
+    bottom: calc(var(--card-zone) + 0.75rem);
+  }
+  .day__scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    will-change: opacity, transform;
+  }
+  .day__scene :global(svg) { width: 100%; height: 100%; max-width: 30rem; }
+  @media (min-width: 640px) { .day__scene :global(svg) { max-width: 38rem; } }
+  :global(.day__scene svg) { aspect-ratio: 400 / 320; height: auto !important; max-height: 100%; }
+
+  :global(.js) .day__moments {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: calc(5.25rem + env(safe-area-inset-bottom));
+    height: var(--card-h, auto);
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 0;
+    display: block;
+  }
+  :global(.js) .moment {
+    position: absolute;
+    inset: 0 0 auto 0;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition:
+      opacity var(--dur-leave) var(--ease-leave),
+      transform 0s linear var(--dur-leave);
+  }
+  :global(.js) .moment[data-active] {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition:
+      opacity var(--dur-enter) var(--ease-enter) 120ms,
+      transform var(--dur-enter) var(--ease-enter) 120ms;
+  }
+  :global(.js) .moment__card {
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+    padding: clamp(1.25rem, 4vw, 2rem);
+    transition: background-color 900ms ease, color 900ms ease;
+  }
+  /* Under a dark sky the card turns to night glass, so it never glares. */
+  [data-sky='dusk'] .moment__card,
+  [data-sky='night'] .moment__card {
+    --surface: #1C2133;
+    --ink: #F1E8DC;
+    --ink-soft: #C3BBC6;
+    --line: rgb(241 232 220 / 0.14);
+    --teal: #6FC9C4;
+    --teal-text: #8ED9D4;
+    --terracotta-text: #F2A18A;
+    --on-accent: #1C2133;
+    --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.2), 0 16px 40px rgb(0 0 0 / 0.3);
+  }
+  :global(.js) [data-sky='dusk'] .moment__card,
+  :global(.js) [data-sky='night'] .moment__card { background: color-mix(in srgb, var(--surface) 78%, transparent); }
+
+  .moment__card { display: grid; gap: var(--space-3); }
+  .moment__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    font-family: var(--font-body);
+    line-height: 1.3;
+  }
+  .moment__area {
+    font-weight: 700;
+    font-size: var(--step-eyebrow);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal-text);
+  }
+  .moment__time { font-size: var(--step-small); color: var(--ink-soft); }
+  .moment__time::before { content: '·'; margin-right: 0.75rem; color: var(--ink-soft); }
+
+  .moment__figure { margin: 0; display: grid; gap: var(--space-2); }
+  .moment__figure blockquote { margin: 0; }
+  .moment__wisdom, .moment__wisdom p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 380;
+    font-variation-settings: 'SOFT' 50, 'WONK' 0;
+    font-size: clamp(1.3125rem, 1.1rem + 1vw, 1.875rem);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+    color: var(--ink);
+  }
+  .moment__source { font-size: 0.8125rem; line-height: 1.45; color: var(--ink-soft); }
+  .moment__figure .moment__source::before { content: '— '; }
+
+  .moment__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    font-size: var(--step-small);
+    color: var(--ink-soft);
+  }
+  .moment__scroll svg { width: 12px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  @media (prefers-reduced-motion: no-preference) {
+    .moment__scroll svg { animation: nudge 2.8s ease-in-out infinite; }
+  }
+  @keyframes nudge { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+
+  .moment__try {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    width: 100%;
+    margin-top: var(--space-2);
+    padding: var(--space-3) 0 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--step-small);
+    line-height: 1.45;
+    text-align: left;
+    cursor: pointer;
+  }
+  .moment__try:focus-visible { outline-offset: 4px; }
+  .moment__tick { flex: none; width: 28px; height: 28px; margin-top: -2px; }
+  .moment__tick circle { fill: transparent; stroke: var(--teal); stroke-width: 1.5; transition: fill var(--dur-press) var(--ease-out); }
+  .moment__tick path {
+    fill: none; stroke: var(--on-accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 20; stroke-dashoffset: 20;
+    transition: stroke-dashoffset 400ms var(--ease-enter);
+  }
+  .moment__try:hover .moment__tick circle { fill: color-mix(in srgb, var(--teal) 12%, transparent); }
+  .moment__try[aria-pressed='true'] .moment__tick circle { fill: var(--teal-text); stroke: var(--teal-text); }
+  .moment__try[aria-pressed='true'] .moment__tick path { stroke-dashoffset: 0; stroke: var(--bg); }
+  .moment__try-text { display: grid; gap: 0.125rem; }
+  .moment__try-label { font-weight: 700; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta-text); }
+
+  /* Dots */
+  .day__dots {
+    position: absolute;
+    right: max(0.25rem, env(safe-area-inset-right));
+    top: calc(var(--header-h) + 1rem);
+    z-index: 2;
+  }
+  .day__dots ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .day__dots button {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .day__dots span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1.5px solid var(--dot, color-mix(in srgb, var(--ink) 55%, transparent));
+    transition: background-color 300ms ease, transform 300ms var(--ease-enter), border-color 600ms ease;
+  }
+  .day__dots button:hover span { transform: scale(1.3); }
+  .day__dots button[aria-current='step'] span { background: var(--dot, var(--ink)); border-color: var(--dot, var(--ink)); transform: scale(1.25); }
+  [data-tone='dark'] .day__dots { --dot: rgb(237 227 214 / 0.85); }
+
+  /* ── Wider screens: card on the left, scene on the right ────── */
+  @media (min-width: 960px) {
+    :global(.js) .day__stage { --card-zone: 0px; }
+    .day__scenes {
+      left: 40%;
+      right: 4%;
+      top: calc(var(--header-h) + 1.5rem);
+      bottom: 13%;
+    }
+    .day__scene :global(svg) { max-width: 44rem; }
+    :global(.js) .day__moments {
+      left: max(var(--gutter), calc((100vw - 84rem) / 2 + var(--gutter)));
+      right: auto;
+      width: min(26rem, 34vw);
+      top: 50%;
+      bottom: auto;
+      height: var(--card-h, auto);
+      margin-top: calc(var(--card-h, 18rem) / -2);
+    }
+    :global(.js) .moment { inset: 0; display: flex; flex-direction: column; justify-content: center; }
+    .day__dots { right: max(1.25rem, calc((100vw - 88rem) / 2)); top: 50%; transform: translateY(-50%); }
+  }
+
+  /* Reduced motion: still illustrations, simple crossfades */
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .moment, :global(.js) .moment[data-active] { transform: none; }
+    .day__scene { transition: opacity 600ms ease; }
+    .day {
+      transition: --sky-top 700ms ease, --sky-bottom 700ms ease, --hill-far 700ms ease, --hill-near 700ms ease;
+    }
+  }
+</style>
+
+<script>
+  import { initDay } from '../../scripts/day-engine';
+  document.addEventListener('astro:page-load', initDay);
+</script>

@@ -1,0 +1,80 @@
+---
+/* Sun, moon and three twinkling star groups. The engine moves sun and moon on an arc. */
+function rand(seed: number) {
+  return () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+}
+const r = rand(20261028);
+const stars = Array.from({ length: 54 }, (_, i) => ({
+  x: Math.round(r() * 1000),
+  y: Math.round(Math.pow(r(), 1.35) * 560),
+  s: r() < 0.14 ? 2 : r() < 0.5 ? 1.3 : 0.9,
+  g: i % 3,
+}));
+---
+<div class="celestial">
+  <svg class="stars" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    {[0, 1, 2].map((g) => (
+      <g class={`stars__g stars__g--${g}`}>
+        {stars.filter((s) => s.g === g).map((s) => <circle cx={s.x} cy={s.y} r={s.s} />)}
+      </g>
+    ))}
+  </svg>
+  <div class="sun" data-sun>
+    <svg viewBox="-40 -40 80 80" aria-hidden="true">
+      <circle r="34" class="sun__glow" />
+      <circle r="17" class="sun__disc" />
+      <circle r="17" cx="0.8" cy="-0.6" class="sun__line" />
+    </svg>
+  </div>
+  <div class="moon" data-moon>
+    <svg viewBox="-40 -40 80 80" aria-hidden="true">
+      <circle r="30" class="moon__glow" />
+      <path class="moon__line" d="M6 -15 C-6 -14 -14 -4 -12 7 C-10 16 0 21 9 18 C1 16 -5 9 -5 0 C-5 -8 0 -13 6 -15 Z" />
+    </svg>
+  </div>
+</div>
+
+<style>
+  .celestial { position: absolute; inset: 0; }
+  .stars {
+    position: absolute;
+    inset: 0 0 auto 0;
+    width: 100%;
+    height: 70%;
+    opacity: var(--stars, 0);
+    transition: opacity 600ms ease;
+  }
+  .stars circle { fill: #F6EEDF; }
+  @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .stars__g { animation: twinkle 3.5s ease-in-out infinite; }
+  .stars__g--1 { animation-duration: 5.5s; animation-delay: -2s; }
+  .stars__g--2 { animation-duration: 7.5s; animation-delay: -4s; }
+
+  .sun, .moon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px;
+    height: 80px;
+    margin: -40px 0 0 -40px;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .sun__glow { fill: #F7D9A0; opacity: 0.35; }
+  .sun__disc { fill: #F9E2B3; opacity: 0.9; }
+  .sun__line { fill: none; stroke: var(--terracotta); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .moon__glow { display: none; }
+  .moon__line { fill: #F3E9D2; fill-opacity: 0.15; stroke: #F3E9D2; stroke-width: 1.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+
+  @media (prefers-color-scheme: dark) {
+    .sun__glow { fill: #E6A35A; opacity: 0.1; }
+    .sun__disc { fill: #E8B86F; opacity: 0.4; }
+  }
+  @media (max-width: 959px) {
+    .sun, .moon { width: 60px; height: 60px; margin: -30px 0 0 -30px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stars__g { animation: none; }
+    .sun, .moon { transition: opacity 500ms ease; }
+  }
+</style>

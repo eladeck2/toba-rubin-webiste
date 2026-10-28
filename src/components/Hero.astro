@@ -1,0 +1,209 @@
+---
+import { home } from '../config/site';
+---
+
+<section class="hero" data-hero>
+  <div class="hero__inner">
+    <div class="hero__text">
+      <p class="hero__greeting" data-greeting>
+        <svg class="hero__greeting-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <g class="sunmark"><circle cx="12" cy="12" r="4.5" /><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M5.6 18.4l1.6-1.6M16.8 7.2l1.6-1.6" /></g>
+          <path class="moonmark" d="M15.5 4.5a7.5 7.5 0 1 0 4 12.6 6 6 0 0 1-4-12.6Z" />
+        </svg>
+        <span data-greeting-text>Welcome</span>
+      </p>
+      <h1 class="hero__title">{home.headline}</h1>
+      <p class="hero__intro">{home.intro}</p>
+      <ul class="hero__proof" aria-label="About Tova">
+        {home.proof.map((item) => <li set:html={item} />)}
+      </ul>
+    </div>
+
+    <figure class="hero__frame">
+      {home.portrait ? (
+        <img
+          src={home.portrait.src}
+          alt={home.portrait.alt}
+          width={home.portrait.width}
+          height={home.portrait.height}
+          fetchpriority="high"
+        />
+      ) : (
+        <svg class="art hero__still" viewBox="0 0 400 500" aria-hidden="true" focusable="false">
+          <g class="hero__candle">
+            <g class="a-i"><path d="M76 402 L76 300 L86 300 L86 402 M68 404 C68 396 94 396 94 404" /></g>
+            <g class="flame"><ellipse cx="81" cy="282" rx="34" ry="34" class="halo" /><path d="M81 296 C75 288 78 278 81 272 C84 278 87 288 81 296 Z" /></g>
+          </g>
+          <g class="a-q steam">
+            <path d="M176 300 C168 284 186 274 177 256 C170 243 182 232 177 218" />
+            <path d="M201 296 C194 278 211 268 203 248 C197 233 208 222 204 206" />
+            <path d="M226 300 C219 285 236 276 228 259 C222 246 233 236 229 222" />
+          </g>
+          <g class="a-i"><path d="M30 405 C140 403 262 406 372 404" /></g>
+          <g class="a-t">
+            <path d="M108 330 C108 317 292 317 292 330 C292 343 108 343 108 330 Z" />
+            <path d="M108 331 C112 373 150 394 200 394 C250 394 288 373 292 331" />
+            <path d="M174 394 L178 404 L222 404 L226 394" />
+            <path d="M120 352 C150 360 250 360 280 352" class="faint" />
+          </g>
+          <g class="a-l">
+            <path d="M178 328 C183 320 193 319 198 325 C192 330 184 331 178 328 Z" />
+            <path d="M204 326 C210 318 222 318 226 324 C220 330 210 330 204 326 Z" />
+            <path d="M190 331 C194 326 201 326 204 330" />
+          </g>
+          <g class="a-q">
+            <path d="M300 404 L298 354 C298 342 304 336 306 331 L306 318 L330 318 L330 331 C332 336 338 342 338 354 L336 404" />
+            <path d="M302 318 L334 318" />
+            <path d="M338 352 C353 351 355 378 337 380" />
+          </g>
+          <g class="a-l sway" style="--sway-dur: 7s">
+            <path d="M318 318 C316 290 310 266 300 246 M320 318 C324 286 332 262 344 244 M319 318 C319 290 320 270 322 250" />
+            <path d="M300 246 C290 244 286 234 288 226 C296 230 300 238 300 246 Z" />
+            <path d="M344 244 C344 234 352 228 360 228 C358 236 352 242 344 244 Z" />
+            <path d="M322 250 C316 242 317 232 323 226 C328 232 328 242 322 250 Z" />
+            <path d="M308 272 C300 272 294 266 294 260 C302 260 307 265 308 272 Z" />
+            <path d="M334 268 C336 260 344 256 350 258 C348 265 342 269 334 268 Z" />
+          </g>
+          <g class="a-t">
+            <path d="M44 394 L104 372" />
+            <path d="M104 372 C108 365 122 361 128 366 C126 373 112 377 104 372 Z" />
+          </g>
+          <g class="a-i faint">
+            <circle cx="138" cy="400" r="1.6" /><circle cx="148" cy="398" r="1.2" /><circle cx="262" cy="400" r="1.4" />
+          </g>
+        </svg>
+      )}
+    </figure>
+  </div>
+
+  <a class="hero__cue" href="#day-title">
+    <span>Walk through a day with me</span>
+    <svg viewBox="0 0 16 24" aria-hidden="true"><path d="M8 3 V20 M2.5 14.5 L8 20 L13.5 14.5" /></svg>
+  </a>
+</section>
+
+<script is:inline>
+  (function () {
+    var h = new Date().getHours();
+    var part = h >= 4 && h < 12 ? 'morning' : h >= 12 && h < 17 ? 'afternoon' : 'evening';
+    var el = document.querySelector('[data-hero]');
+    if (!el) return;
+    el.setAttribute('data-daypart', part);
+    var t = el.querySelector('[data-greeting-text]');
+    if (t) t.textContent = 'Good ' + part;
+  })();
+</script>
+
+<style>
+  .hero {
+    --dawn: #EFC9B6;
+    --frame-a: #F8E9DA;
+    --frame-b: #EFCBB3;
+    position: relative;
+    padding: calc(var(--header-h) + clamp(2rem, 6vw, 5rem)) var(--gutter) clamp(5rem, 10vw, 8rem);
+    background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 62%, var(--dawn) 100%);
+  }
+  .hero[data-daypart='afternoon'] { --frame-a: #F8EBD8; --frame-b: #F2D7B4; }
+  .hero[data-daypart='evening'] { --frame-a: #F4D7B5; --frame-b: #E7B48A; }
+  @media (prefers-color-scheme: dark) {
+    .hero { --dawn: #3D2B2B; --frame-a: #3A2C25; --frame-b: #4A3329; }
+    .hero[data-daypart='evening'] { --frame-a: #3B2A20; --frame-b: #553623; }
+  }
+
+  .hero__inner {
+    max-width: 76rem;
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .hero__inner { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+  }
+
+  .hero__text { display: grid; gap: var(--space-6); max-width: 38rem; }
+  .hero__greeting {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--step-small);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--terracotta-text);
+  }
+  .hero__greeting-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+  .hero__greeting-icon .moonmark { display: none; }
+  .hero[data-daypart='evening'] .sunmark { display: none; }
+  .hero[data-daypart='evening'] .moonmark { display: inline; }
+
+  .hero__title {
+    font-size: var(--step-title);
+    font-weight: 360;
+    letter-spacing: -0.02em;
+    max-width: 13ch;
+  }
+  .hero__intro {
+    font-size: var(--step-lede);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 30ch;
+  }
+  .hero__proof {
+    list-style: none;
+    margin: var(--space-2) 0 0;
+    padding: var(--space-4) 0 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0;
+    font-size: var(--step-small);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 36rem;
+  }
+  .hero__proof li { display: flex; align-items: baseline; gap: 0.6rem; width: 100%; }
+  .hero__proof li::before { content: ''; flex: none; width: 4px; height: 4px; border-radius: 50%; background: var(--teal); transform: translateY(-0.2em); }
+  @media (min-width: 900px) {
+    .hero__proof li { width: auto; }
+    .hero__proof li::before { display: none; }
+    .hero__proof li:not(:last-child)::after { content: '·'; margin: 0 0.6rem; opacity: 0.7; }
+  }
+  .hero__proof :global(em) { font-style: italic; }
+
+  .hero__frame {
+    margin: 0;
+    justify-self: center;
+    width: min(100%, 26rem);
+    aspect-ratio: 4 / 5;
+    border-radius: 999px 999px var(--radius-card) var(--radius-card);
+    overflow: hidden;
+    background: linear-gradient(to bottom, var(--frame-a), var(--frame-b));
+    box-shadow: inset 0 0 0 1px var(--line), var(--shadow-soft);
+  }
+  @media (max-width: 899px) { .hero__frame { width: min(78%, 22rem); } }
+  .hero__frame img { width: 100%; height: 100%; object-fit: cover; }
+  .hero__still { width: 100%; height: 100%; }
+  .hero__candle { display: none; }
+  .hero[data-daypart='evening'] .hero__candle { display: inline; }
+
+  .hero__cue {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(1.25rem, 3vw, 2rem);
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--step-small);
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .hero__cue:hover { color: var(--ink); }
+  .hero__cue svg { width: 12px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__cue svg { animation: cue 2.8s ease-in-out infinite; }
+  }
+  @keyframes cue { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+</style>
