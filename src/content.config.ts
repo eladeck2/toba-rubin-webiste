@@ -41,4 +41,49 @@ const moments = defineCollection({
   }),
 });
 
-export const collections = { moments };
+/**
+ * Ways to take part (Tova's Table, the retreat, talks, the book). Order follows
+ * the provisional offerings order. `visible: false` hides an offering that
+ * isn't ready (for example the 360 Assessment) without deleting its copy.
+ * Copy is Elad's draft from Tova's answers: PENDING TOVA'S APPROVAL.
+ */
+const offerings = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/offerings' }),
+  schema: ({ image }) =>
+    z.object({
+      order: z.number(),
+      title: z.string(),
+      kind: z.string(),
+      summary: z.string(),
+      /** Where and when, stated plainly (in-person offers name their location). */
+      details: z.string().optional(),
+      photo: image().optional(),
+      photoAlt: z.string().optional(),
+      /** Line-art fallback when there is no photo yet. */
+      scene: z.enum(['window', 'kitchen', 'walk', 'desk', 'tea', 'table', 'night', 'chair']).optional(),
+      /** The offering's own page; linked only once that page is ready (src/config/site.ts). */
+      href: z.string().optional(),
+      /** An outside link, e.g. the book listing or the retreat's own site. */
+      external: z.object({ label: z.string(), url: z.string().url() }).optional(),
+      visible: z.boolean().default(true),
+      approved: z.boolean().default(false),
+    }),
+});
+
+/** Long-form page copy (About, later Privacy). Body is Markdown. */
+const pages = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/pages' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      heading: z.string(),
+      lede: z.string(),
+      description: z.string(),
+      photo: image().optional(),
+      photoAlt: z.string().optional(),
+      photoCaption: z.string().optional(),
+      approved: z.boolean().default(false),
+    }),
+});
+
+export const collections = { moments, offerings, pages };

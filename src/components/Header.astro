@@ -22,9 +22,35 @@ const path = Astro.url.pathname;
       </nav>
     )}
 
-    <a class="btn site-header__cta" href="/#join" data-header-cta>Join the table</a>
+    <a class="btn site-header__cta" href="#join" data-header-cta>Join the table</a>
+
+    {items.length > 0 && (
+      <button class="menu-btn" type="button" aria-haspopup="dialog" aria-controls="menu-sheet" data-menu-open>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
+        <span class="visually-hidden">Menu</span>
+      </button>
+    )}
   </div>
 </header>
+
+{items.length > 0 && (
+  <dialog class="menu-sheet" id="menu-sheet" aria-label="Menu" data-menu>
+    <div class="menu-sheet__inner">
+      <button class="menu-sheet__close" type="button" data-menu-close>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        <span class="visually-hidden">Close menu</span>
+      </button>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="/" aria-current={path === '/' ? 'page' : undefined}>Home</a></li>
+          {items.map((item) => (
+            <li><a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </dialog>
+)}
 
 <style>
   .site-header {
@@ -72,6 +98,42 @@ const path = Astro.url.pathname;
   .site-nav a { color: inherit; text-decoration: none; font-size: 0.9375rem; }
   .site-nav a[aria-current='page'] { text-decoration: underline; text-underline-offset: 0.35em; }
   @media (max-width: 860px) { .site-nav { display: none; } }
+  .site-header__inner { gap: var(--space-3); }
+  .menu-btn {
+    display: grid; place-items: center;
+    width: 44px; height: 44px; padding: 0;
+    border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+    border-radius: 50%; background: none; color: inherit; cursor: pointer;
+  }
+  .menu-btn svg, .menu-sheet__close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+  @media (min-width: 861px) { .site-header__inner { gap: var(--space-8); } .menu-btn { display: none; } }
+  .menu-sheet {
+    margin: auto 0 0; width: 100%; max-width: 100%; max-height: 85svh;
+    border: 0; padding: 0;
+    border-radius: 24px 24px 0 0;
+    background: var(--surface); color: var(--ink);
+    box-shadow: 0 -12px 40px rgb(60 40 20 / 0.18);
+  }
+  .menu-sheet::backdrop { background: rgb(30 24 20 / 0.35); }
+  .menu-sheet[open] { animation: sheet-in var(--dur-enter) var(--ease-enter); }
+  @keyframes sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .menu-sheet[open] { animation: none; } }
+  .menu-sheet__inner {
+    position: relative;
+    padding: 1.5rem max(1.5rem, env(safe-area-inset-left)) calc(2rem + env(safe-area-inset-bottom));
+  }
+  .menu-sheet__close {
+    position: absolute; top: 0.75rem; right: 0.75rem;
+    display: grid; place-items: center; width: 44px; height: 44px;
+    border: 0; border-radius: 50%; background: none; color: inherit; cursor: pointer;
+  }
+  .menu-sheet ul { list-style: none; margin: 0; padding: 0.5rem 0 0; display: grid; }
+  .menu-sheet a {
+    display: block; padding: 0.875rem 0;
+    font-family: var(--font-display); font-size: 1.75rem; font-weight: 380;
+    color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line);
+  }
+  .menu-sheet a[aria-current='page'] { color: var(--terracotta-text); }
 
   .site-header__cta {
     min-height: 44px;
@@ -140,4 +202,17 @@ const path = Astro.url.pathname;
     }, { once: true });
   }
   document.addEventListener('astro:page-load', initHeader);
+
+  function initMenu() {
+    const sheet = document.querySelector<HTMLDialogElement>('[data-menu]');
+    const open = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+    if (!sheet || !open) return;
+    open.addEventListener('click', () => sheet.showModal());
+    sheet.querySelector('[data-menu-close]')?.addEventListener('click', () => sheet.close());
+    // Tap on the backdrop closes; following a link closes before the page changes.
+    sheet.addEventListener('click', (e) => {
+      if (e.target === sheet || (e.target as HTMLElement).closest('a')) sheet.close();
+    });
+  }
+  document.addEventListener('astro:page-load', initMenu);
 </script>

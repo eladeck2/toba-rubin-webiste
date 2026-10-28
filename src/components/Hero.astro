@@ -18,6 +18,10 @@ import { home } from '../config/site';
       <ul class="hero__proof" aria-label="About Tova">
         {home.proof.map((item) => <li><span set:html={item} /></li>)}
       </ul>
+      <p class="hero__links">
+        <a href="/about/">Meet Tova</a>
+        <a href="#ways">Ways to join me</a>
+      </p>
     </div>
 
     <figure class="hero__frame">
@@ -80,10 +84,6 @@ import { home } from '../config/site';
     </figure>
   </div>
 
-  <a class="hero__cue" href="#day-title">
-    <span>Walk through a day with me</span>
-    <svg viewBox="0 0 16 24" aria-hidden="true"><path d="M8 3 V20 M2.5 14.5 L8 20 L13.5 14.5" /></svg>
-  </a>
 </section>
 
 <script is:inline>
@@ -104,8 +104,8 @@ import { home } from '../config/site';
     --frame-a: #F8E9DA;
     --frame-b: #EFCBB3;
     position: relative;
-    padding: calc(var(--header-h) + clamp(2rem, 6vw, 5rem)) var(--gutter) clamp(5rem, 10vw, 8rem);
-    background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 62%, var(--dawn) 100%);
+    padding: calc(var(--header-h) + clamp(2rem, 6vw, 5rem)) var(--gutter) clamp(3rem, 7vw, 6rem);
+    background: var(--bg);
   }
   .hero[data-daypart='afternoon'] { --frame-a: #F8EBD8; --frame-b: #F2D7B4; }
   .hero[data-daypart='evening'] { --frame-a: #F4D7B5; --frame-b: #E7B48A; }
@@ -190,24 +190,7 @@ import { home } from '../config/site';
   .hero__candle { display: none; }
   .hero[data-daypart='evening'] .hero__candle { display: inline; }
 
-  .hero__cue {
-    position: absolute;
-    left: 50%;
-    bottom: clamp(1.25rem, 3vw, 2rem);
-    transform: translateX(-50%);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
-    font-size: var(--step-small);
-    color: var(--ink-soft);
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .hero__cue:hover { color: var(--ink); }
-  .hero__cue svg { width: 12px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-  @media (prefers-reduced-motion: no-preference) {
-    .hero__cue svg { animation: cue 2.8s ease-in-out infinite; }
-  }
-  @keyframes cue { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+  .hero__links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); font-weight: 600; }
+  .hero__links a { text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  .hero__links a::after { content: ' →'; }
 </style>

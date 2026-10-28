@@ -1,0 +1,50 @@
+---
+/**
+ * The 360 view, stated plainly before the day story walks through it.
+ * Listed in Tova's own order. One-liners are Elad's drafts: PENDING TOVA'S APPROVAL.
+ */
+const areas = [
+  { name: 'Food', line: 'What you eat, and how you eat it.' },
+  { name: 'Movement', line: 'Moving your body in ways you enjoy.' },
+  { name: 'Mental wellness', line: 'Meeting stress and worry with more ease.' },
+  { name: 'Sleep', line: 'Rest that truly restores you.' },
+  { name: 'Purpose', line: 'Knowing what matters to you, and doing it.' },
+  { name: 'Relationships', line: 'The people who share your table.' },
+];
+---
+
+<section class="section areas" aria-labelledby="areas-title">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow section__eyebrow">The 360 view</p>
+      <h2 class="section__title" id="areas-title">Six areas of a whole life</h2>
+      <p class="section__lede">Wellbeing isn’t one thing. I look at six areas together, and I start where I always start: the kitchen.</p>
+    </header>
+    <ol class="areas__list">
+      {areas.map((a) => (
+        <li>
+          <h3>{a.name}</h3>
+          <p>{a.line}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="areas__next">
+      <a class="text-link areas__link" href="#day-title">Spend a day with all six</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .areas { padding-bottom: clamp(3rem, 6vw, 5rem); background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 70%, var(--dawn) 100%); --dawn: #EFC9B6; }
+  @media (prefers-color-scheme: dark) { .areas { --dawn: #3D2B2B; } }
+  .areas__list {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 0 clamp(1.5rem, 4vw, 3rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+  .areas__list li { display: grid; gap: var(--space-1); padding: var(--space-4) 0; border-top: 1px solid var(--line); }
+  .areas__list h3 { font-size: 1.375rem; font-weight: 420; }
+  .areas__list p { color: var(--ink-soft); font-size: var(--step-small); }
+  .areas__next { margin-top: clamp(2rem, 4vw, 3rem); }
+  .areas__link::after { content: ' ↓'; }
+</style>

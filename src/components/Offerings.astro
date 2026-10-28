@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { isReady } from '../config/site';
+import Window from './scenes/Window.astro';
+import Kitchen from './scenes/Kitchen.astro';
+import Walk from './scenes/Walk.astro';
+import Desk from './scenes/Desk.astro';
+import Tea from './scenes/Tea.astro';
+import Table from './scenes/Table.astro';
+import Night from './scenes/Night.astro';
+import Chair from './scenes/Chair.astro';
+
+const scenes = { window: Window, kitchen: Kitchen, walk: Walk, desk: Desk, tea: Tea, table: Table, night: Night, chair: Chair };
+const items = (await getCollection('offerings'))
+  .filter((o) => o.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="section offerings" id="ways" aria-labelledby="ways-title">
+  <div class="container">
+    <header class="section__head">
+      <p class="eyebrow section__eyebrow">What I offer</p>
+      <h2 class="section__title" id="ways-title">Ways to join me</h2>
+      <p class="section__lede">Cook with me, rest with me, or bring me to your group. It all starts with good food and real conversation.</p>
+    </header>
+
+    <ul class="offerings__list">
+      {items.map((o) => {
+        const d = o.data;
+        const Scene = d.scene ? scenes[d.scene] : null;
+        const link = isReady(d.href) ? { href: d.href!, label: `More about ${d.title}`, external: false } : d.external ? { href: d.external.url, label: d.external.label, external: true } : null;
+        return (
+          <li class="offering">
+            <div class="offering__media photo" aria-hidden={d.photo ? undefined : 'true'}>
+              {d.photo ? (
+                <Image src={d.photo} alt={d.photoAlt ?? ''} widths={[320, 498]} sizes="(min-width: 768px) 18rem, 100vw" />
+              ) : (
+                Scene && <div class="offering__art"><Scene /></div>
+              )}
+            </div>
+            <div class="offering__text">
+              <p class="offering__kind">{d.kind}</p>
+              <h3 class="offering__title">{d.title}</h3>
+              <p class="offering__summary">{d.summary}</p>
+              {link && (
+                <a class="text-link" href={link.href} {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}>
+                  {link.label}
+                </a>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .offerings__list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .offering {
+    display: grid;
+    gap: var(--space-4) clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+    border-top: 1px solid var(--line);
+    align-items: center;
+  }
+  .offering:last-child { border-bottom: 1px solid var(--line); }
+  @media (min-width: 768px) {
+    .offering { grid-template-columns: 18rem minmax(0, 1fr); }
+  }
+  .offering__media { aspect-ratio: 16 / 9; max-width: 100%; }
+  @media (min-width: 768px) { .offering__media { aspect-ratio: 4 / 3; } }
+  .offering__art {
+    width: 100%; height: 100%;
+    display: grid; place-items: center;
+    padding: 0.75rem 1rem 0;
+    background: linear-gradient(to bottom, #F6E4D6, #F1DCC8);
+    --paper: #F3DFCD;
+  }
+  @media (prefers-color-scheme: dark) {
+    .offering__art { background: linear-gradient(to bottom, #3A2C25, #45332A); --paper: #3F3028; }
+  }
+  .offering__art :global(svg) { width: 100%; height: auto; max-height: 100%; }
+  .offering__text { display: grid; gap: var(--space-2); justify-items: start; min-width: 0; max-width: 38rem; }
+  .offering__kind { font-size: var(--step-small); color: var(--terracotta-text); font-weight: 600; }
+  .offering__title { font-size: clamp(1.625rem, 1.3rem + 1.2vw, 2.25rem); font-weight: 380; }
+  .offering__summary { color: var(--ink-soft); margin-bottom: var(--space-2); }
+</style>

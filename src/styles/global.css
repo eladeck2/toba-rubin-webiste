@@ -300,3 +300,16 @@ img, svg { display: block; max-width: 100%; }
 
 /* Features that need JavaScript stay out of the way without it. */
 html:not(.js) [data-garden] { display: none; }
+
+/* ── Page sections ───────────────────────────────────────────── */
+.section { padding: var(--section-pad) var(--gutter); }
+.section--tint { background: color-mix(in srgb, var(--surface) 70%, var(--bg)); }
+.container { max-width: 72rem; margin: 0 auto; }
+.section__head { display: grid; gap: var(--space-4); max-width: 40rem; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+.section__eyebrow { color: var(--teal-text); }
+.section__title { font-size: var(--step-h2); font-weight: 360; letter-spacing: -0.02em; }
+.section__lede { font-size: var(--step-lede); line-height: 1.5; color: var(--ink-soft); max-width: 36ch; }
+.text-link { font-weight: 600; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.text-link::after { content: ' →'; }
+.photo { border-radius: var(--radius-card); overflow: hidden; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.94) sepia(0.06); }

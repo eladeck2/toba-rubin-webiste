@@ -1,19 +1,20 @@
 ---
-import { footerLinks, disclaimer, site } from '../config/site';
+import { footerLinks, nav, disclaimer, site } from '../config/site';
 interface Props { tone?: 'page' | 'night' }
 const { tone = 'page' } = Astro.props;
-const links = footerLinks.filter((l) => l.ready);
+const links = [{ label: 'Home', href: '/', ready: true }, ...nav, ...footerLinks].filter((l) => l.ready);
+const book = { label: 'Wisdom from the Couch', url: 'https://www.amazon.com/s?k=9798652940201' };
 const year = new Date().getFullYear();
 ---
 
 <footer class:list={['site-footer', { 'site-footer--night': tone === 'night' }]} data-tone={tone === 'night' ? 'dark' : undefined}>
   <div class="site-footer__inner">
     <p class="site-footer__mark">Tova Rubin</p>
-    {links.length > 0 && (
-      <ul class="site-footer__links">
-        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-      </ul>
-    )}
+    <p class="site-footer__about">Psychologist and plant-based chef. Whole-person wellbeing that starts at the kitchen table.</p>
+    <ul class="site-footer__links">
+      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      <li><a href={book.url} target="_blank" rel="noopener">The book: <em>{book.label}</em></a></li>
+    </ul>
     <p class="site-footer__note">{disclaimer}</p>
     <p class="site-footer__copy">© {year} {site.name}</p>
   </div>
@@ -50,6 +51,7 @@ const year = new Date().getFullYear();
     color: var(--ink);
   }
   .site-footer__links { display: flex; flex-wrap: wrap; gap: var(--space-6); list-style: none; padding: 0; margin: 0; }
+  .site-footer__about { max-width: 40ch; color: var(--ink); }
   .site-footer__note { max-width: 46ch; }
   .site-footer__copy { opacity: 0.85; }
 </style>

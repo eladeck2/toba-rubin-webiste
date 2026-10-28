@@ -23,7 +23,8 @@ export const home = {
     'A better life, starting in the kitchen.',
     'Twenty years of listening. Now I cook, too.',
   ],
-  intro: 'Small, nourishing changes for your whole life, from what’s on your plate to how you sleep.',
+  /** Says plainly who Tova is and what the site is for. */
+  intro: 'I’m Tova Rubin, a psychologist and plant-based chef. I help you eat well and live more fully, from your plate to your sleep.',
   proof: [
     'Dr. Tova Rubin, PhD (Vanderbilt, with distinction)',
     '20 years as a clinical psychologist',
@@ -53,8 +54,14 @@ export const nav: { label: string; href: string; ready: boolean }[] = [
   { label: 'Tova’s Table', href: '/tovas-table/', ready: false },
   { label: 'Retreats', href: '/retreats/', ready: false },
   { label: 'Journal', href: '/journal/', ready: false },
-  { label: 'About', href: '/about/', ready: false },
+  { label: 'About', href: '/about/', ready: true },
 ];
+
+/** True once the page at `href` is finished and may be linked. */
+export function isReady(href?: string) {
+  if (!href) return false;
+  return [...nav, ...footerLinks].some((l) => l.href === href && l.ready);
+}
 
 export const footerLinks: { label: string; href: string; ready: boolean }[] = [
   { label: 'Talks and workshops', href: '/talks/', ready: false },

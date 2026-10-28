@@ -1,0 +1,52 @@
+---
+import { getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import JoinTable from '../components/JoinTable.astro';
+
+const page = (await getEntry('pages', 'about'))!;
+const { Content } = await render(page);
+---
+
+<Base title={page.data.title} description={page.data.description} footerTone="night">
+  <article class="about">
+    <header class="about__head">
+      <p class="eyebrow about__eyebrow">About Tova</p>
+      <h1 class="about__title">{page.data.heading}</h1>
+      <p class="about__lede">{page.data.lede}</p>
+    </header>
+
+    {page.data.photo && (
+      <figure class="about__figure">
+        <div class="photo about__photo">
+          <Image src={page.data.photo} alt={page.data.photoAlt ?? ''} widths={[443]} sizes="(min-width: 900px) 56rem, 100vw" loading="eager" />
+        </div>
+        {page.data.photoCaption && <figcaption>{page.data.photoCaption}</figcaption>}
+      </figure>
+    )}
+
+    {/* PENDING TOVA'S APPROVAL: copy in src/content/pages/about.md */}
+    <div class="about__body">
+      <Content />
+    </div>
+  </article>
+  <JoinTable />
+</Base>
+
+<style>
+  .about { padding: calc(var(--header-h) + clamp(2.5rem, 7vw, 6rem)) var(--gutter) var(--section-pad); }
+  .about__head, .about__body, .about__figure { max-width: 44rem; margin-left: auto; margin-right: auto; }
+  .about__head { display: grid; gap: var(--space-4); }
+  .about__eyebrow { color: var(--teal-text); }
+  .about__title { font-size: var(--step-title); font-weight: 360; letter-spacing: -0.02em; }
+  .about__lede { font-size: var(--step-lede); line-height: 1.5; color: var(--ink-soft); max-width: 34ch; }
+  .about__figure { margin-top: clamp(2rem, 5vw, 3.5rem); margin-bottom: clamp(2rem, 5vw, 3.5rem); display: grid; gap: var(--space-3); max-width: 56rem; }
+  .about__photo { aspect-ratio: 2 / 1; max-width: 100%; }
+  .about__figure figcaption { font-size: var(--step-small); color: var(--ink-soft); }
+  .about__body { display: grid; gap: var(--space-4); }
+  .about__body :global(p) { max-width: var(--measure); }
+  .about__body :global(h2) { font-size: clamp(1.625rem, 1.3rem + 1.2vw, 2.25rem); font-weight: 380; margin-top: var(--space-8); }
+  .about__body :global(ul) { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
+  .about__body :global(li) { display: flex; gap: 0.75rem; align-items: baseline; }
+  .about__body :global(li)::before { content: ''; flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); transform: translateY(-0.2em); }
+</style>

@@ -2,6 +2,8 @@
 
 Oct 28, 2026 · Elad
 
+> **v2.1 changes (Oct 28, 2026, Elad):** the home page becomes a real home page, not a landing page; Tova's questionnaire answers win where they differ from this doc. Changes are marked *v2.1* below and logged in `docs/decisions.md`.
+
 > Retrieved via the Google Drive connector on 2026-10-28 (the direct `export?format=md` URL is blocked by this build environment's network policy). Google's `\#` escapes have been normalised to plain `#`.
 
 ## Overview and goals
@@ -73,7 +75,7 @@ Every color pair is checked for readable contrast, especially orange-red on crea
 
 The first build felt crowded: about ten sections and nine competing calls to action on the home page, three forms, and draft labels everywhere. These five rules keep the site calm and welcoming.
 
-1. **One page, one job.** Each page has a single main action. On the home page it is "Join the table".
+1. **One page, one job.** Each page has a single main action. On the home page it is "Join the table". *v2.1:* one main action does not mean one topic. The home page must still say plainly who Tova is, what she offers and how to take part, so nobody lands confused.
 2. **Calm by default.** Generous space, short sentences, at most one button per screen.
 3. **Finished, not in progress.** No draft labels on the public site. A feature that isn't ready stays hidden until it is.
 4. **Trust, quietly.** One short privacy line under each form; the full details live on the Privacy page.
@@ -133,12 +135,12 @@ The menu holds five items plus one always-visible button: The 360 · Tova's Tabl
 
 | Page | Purpose | What's on it |
 | :-: | :-: | :-: |
-| Home | Make the first impression and get the sign-up | A short welcome from Tova (photo, headline, one sentence, proof line), then A day in a life, ending with the one sign-up. Nothing else: offerings, retreat, Journal and testimonials live on their own pages, reachable from the menu |
+| Home | Say who Tova is and what she offers, and get the sign-up | *v2.1:* 1) Welcome: photo, headline, one plain sentence ("I'm Tova Rubin, a psychologist and plant-based chef..."), proof line, links to About and the offerings. 2) Ways to join me: Tova's Table, the Restoration retreat, talks and workshops, the book, each with a photo or drawing, one line, and a link to its page. 3) Meet Tova: a short bio, photo, credentials, link to About. 4) The 360 view: the six areas in Tova's order, one line each. 5) A day in a life, walking through the six areas. 6) The one sign-up. Still one form and one button per screen |
 | The 360 | Explain the six areas and build interest in the Assessment | One short section per area; "Coming soon: be the first to hear" sign-up; request a free 20-minute Zoom chat |
 | Tova's Table | Fill cooking classes | How a class works, where it happens, photos, class testimonials, next dates or an interest sign-up |
 | Retreats | Fill the February Restoration | 24-hour Restoration in Maryland, end of February, with a link to its own site; interest sign-up for future retreats |
 | Journal | Bring visitors back and feed the newsletter | Recipes, poems and reflections from Tova; Ask Tova answers |
-| About | Earn trust | Her story from psychologist to chef; credentials; the book; speaking testimonials |
+| About | Earn trust | Her story from psychologist to chef; the 360 view; training and experience (PhD Vanderbilt with distinction; residency and postdoc in San Antonio; 20 years in private practice in the Washington, DC area; adjunct faculty at George Washington University; hospice volunteer; certified plant-based chef); the book; what she does and doesn't offer; speaking testimonials. *v2.1:* built first, so the menu has somewhere real to go |
 | Talks and workshops | Book speaking engagements | Updated talk topics from the old site, speaker testimonials, an invite form |
 | Contact | Catch everything else | Short form, email address, a note not to send private health details |
 
@@ -237,7 +239,8 @@ These working answers let the build start now. Each one stands until Tova answer
 | Domains | Build on the Netlify address; switch tovarubin.com and redirect drtovarubin.com once Elad has registrar access |
 | Home centerpiece (Claude's pick, not Tova's) | A day in a life. Alternatives Tova can switch to: a turnable 3D seated figure with six glowing points, or a drawn tree whose six branches open as you explore |
 | Wisdom lines (Claude's drafts) | The examples in A day in a life stay as drafts until Tova approves or rewrites each one |
-| Listening forms at launch | Moved to v1.1 so the launch home page has one form only. Let's talk keeps its message form |
+| Listening forms at launch | *v2.1:* all three ship at launch (Tova: "all of these sound amazing"), each on its own page, so the home page still has one form |
+| Photos | *v2.1:* Tova's own photos wherever we have them (from her Instagram for now; originals needed). Home uses a food photo until she sends a portrait |
 
 ## Notes for the builder
 
