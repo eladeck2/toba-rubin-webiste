@@ -15,7 +15,7 @@ import { home } from '../config/site';
       <h1 class="hero__title">{home.headline}</h1>
       <p class="hero__intro">{home.intro}</p>
       <ul class="hero__proof" aria-label="About Tova">
-        {home.proof.map((item) => <li set:html={item} />)}
+        {home.proof.map((item) => <li><span set:html={item} /></li>)}
       </ul>
     </div>
 
@@ -41,6 +41,7 @@ import { home } from '../config/site';
           </g>
           <g class="a-i"><path d="M30 405 C140 403 262 406 372 404" /></g>
           <g class="a-t">
+            <path class="solid" d="M108 331 C112 373 150 394 200 394 C250 394 288 373 292 331 Z" style="stroke:none" />
             <path d="M108 330 C108 317 292 317 292 330 C292 343 108 343 108 330 Z" />
             <path d="M108 331 C112 373 150 394 200 394 C250 394 288 373 292 331" />
             <path d="M174 394 L178 404 L222 404 L226 394" />
@@ -182,7 +183,7 @@ import { home } from '../config/site';
   }
   @media (max-width: 899px) { .hero__frame { width: min(78%, 22rem); } }
   .hero__frame img { width: 100%; height: 100%; object-fit: cover; }
-  .hero__still { width: 100%; height: 100%; }
+  .hero__still { width: 100%; height: 100%; --paper: var(--frame-a); }
   .hero__candle { display: none; }
   .hero[data-daypart='evening'] .hero__candle { display: inline; }
 

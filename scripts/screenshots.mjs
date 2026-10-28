@@ -14,7 +14,6 @@ const { chromium } = await import('playwright').catch(() => createRequire(import
 const outArg = process.argv.indexOf('--out');
 const OUT = outArg > -1 ? process.argv[outArg + 1] : 'docs/screenshots/phase-1';
 const PORT = 4329;
-const BASE = `http://localhost:${PORT}/`;
 
 const viewports = [
   { name: '375', width: 375, height: 812, mobile: true },
@@ -27,10 +26,16 @@ const motions = [
   { name: 'reduced', value: 'reduce' },
 ];
 
+// `astro preview` may already be running as a background daemon; use whatever URL it reports.
 const server = spawn('npx', ['astro', 'preview', '--port', String(PORT)], { stdio: 'pipe' });
-await new Promise((resolve, reject) => {
+const BASE = await new Promise((resolve, reject) => {
   const t = setTimeout(() => reject(new Error('preview did not start')), 20000);
-  server.stdout.on('data', (d) => { if (String(d).includes(String(PORT))) { clearTimeout(t); resolve(); } });
+  const onData = (d) => {
+    const m = String(d).match(/http:\/\/localhost:\d+/);
+    if (m) { clearTimeout(t); resolve(m[0] + '/'); }
+  };
+  server.stdout.on('data', onData);
+  server.stderr.on('data', onData);
 });
 
 const browser = await chromium.launch();
@@ -87,4 +92,5 @@ try {
 } finally {
   await browser.close();
   server.kill();
+  spawn('npx', ['astro', 'preview', 'stop'], { stdio: 'ignore' });
 }
