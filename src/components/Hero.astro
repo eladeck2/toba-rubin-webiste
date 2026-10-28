@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { home } from '../config/site';
 ---
 
@@ -21,12 +22,14 @@ import { home } from '../config/site';
 
     <figure class="hero__frame">
       {home.portrait ? (
-        <img
+        <Image
           src={home.portrait.src}
           alt={home.portrait.alt}
-          width={home.portrait.width}
-          height={home.portrait.height}
+          widths={[360, 498]}
+          sizes="(min-width: 900px) 26rem, 78vw"
+          loading="eager"
           fetchpriority="high"
+          class="hero__photo"
         />
       ) : (
         <svg class="art hero__still" viewBox="0 0 400 500" aria-hidden="true" focusable="false">
@@ -164,11 +167,7 @@ import { home } from '../config/site';
   }
   .hero__proof li { display: flex; align-items: baseline; gap: 0.6rem; width: 100%; }
   .hero__proof li::before { content: ''; flex: none; width: 4px; height: 4px; border-radius: 50%; background: var(--teal); transform: translateY(-0.2em); }
-  @media (min-width: 900px) {
-    .hero__proof li { width: auto; }
-    .hero__proof li::before { display: none; }
-    .hero__proof li:not(:last-child)::after { content: '·'; margin: 0 0.6rem; opacity: 0.7; }
-  }
+
   .hero__proof :global(em) { font-style: italic; }
 
   .hero__frame {
@@ -182,7 +181,11 @@ import { home } from '../config/site';
     box-shadow: inset 0 0 0 1px var(--line), var(--shadow-soft);
   }
   @media (max-width: 899px) { .hero__frame { width: min(78%, 22rem); } }
-  .hero__frame img { width: 100%; height: 100%; object-fit: cover; }
+  .hero__frame :global(img) { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.94) sepia(0.06); }
+  @media (hover: hover) and (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+    .hero__frame :global(img) { transition: transform 1.2s var(--ease-enter); }
+    .hero__frame:hover :global(img) { transform: scale(1.02); }
+  }
   .hero__still { width: 100%; height: 100%; --paper: var(--frame-a); }
   .hero__candle { display: none; }
   .hero[data-daypart='evening'] .hero__candle { display: inline; }

@@ -3,6 +3,9 @@
  * affects the build lives here, so Tova's Round 2 answers are one-line swaps.
  */
 
+import type { ImageMetadata } from 'astro';
+import acaiBowl from '../assets/photos/acai-bowl-orange.jpg';
+
 export const site = {
   name: 'Tova Rubin',
   shortName: 'Tova',
@@ -27,8 +30,15 @@ export const home = {
     'Certified plant-based chef',
     'Author of <em>Wisdom from the Couch</em>',
   ],
-  /** Set to an image in /public (e.g. '/images/tova-at-the-table.jpg') once Tova sends photos. */
-  portrait: null as null | { src: string; alt: string; width: number; height: number },
+  /**
+   * Hero photo. Provisional: one of Tova's own food photos until she sends a
+   * portrait of herself at the table (the doc's first choice). Set to null to
+   * show the line-art still life instead.
+   */
+  portrait: {
+    src: acaiBowl,
+    alt: 'A smoothie bowl topped with strawberries, banana, pumpkin seeds, hemp and granola, on an orange tray',
+  } as null | { src: ImageMetadata; alt: string },
   /** Provisional: 'day' (A day in a life). Alternatives in the doc: 'figure', 'tree'. Only 'day' is built. */
   centerpiece: 'day' as const,
 };
@@ -63,6 +73,17 @@ export const signup = {
 /** Provisional legal line from "What not to claim". */
 export const disclaimer =
   'Tova is a psychologist by training and does not offer psychotherapy or medical advice through this site.';
+
+/**
+ * Tova asked for all three listening ideas ("all of these sound amazing"), so
+ * they ship at launch rather than v1.1 (see docs/decisions.md). Each lives on
+ * its own page, so the home page keeps its single sign-up.
+ */
+export const listening = {
+  whatWouldHelp: { enabled: true, page: '/journal/' },
+  interestVotes: { enabled: true, pages: ['/the-360/', '/retreats/', '/tovas-table/'] },
+  askTova: { enabled: true, page: '/journal/' },
+};
 
 export const features = {
   /** Play the garden: synthesized Web Audio until CC0/licensed recordings are chosen. */
