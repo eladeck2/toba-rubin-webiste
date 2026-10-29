@@ -87,7 +87,7 @@ const items = (await getCollection('offerings'))
   @media (prefers-color-scheme: dark) {
     .offering__art { background: linear-gradient(to bottom, #3A2C25, #45332A); --paper: #3F3028; }
   }
-  .offering__art :global(svg) { width: 100%; height: auto; max-height: 100%; }
+  .offering__art :global(svg) { height: 100%; width: auto; max-width: 100%; }
   .offering__text { display: grid; gap: var(--space-2); justify-items: start; min-width: 0; max-width: 38rem; }
   .offering__kind { font-size: var(--step-small); color: var(--terracotta-text); font-weight: 600; }
   .offering__title { font-size: clamp(1.625rem, 1.3rem + 1.2vw, 2.25rem); font-weight: 380; }
