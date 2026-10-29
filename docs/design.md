@@ -2,6 +2,8 @@
 
 Oct 28, 2026 · Elad
 
+> **v2.2 (Oct 29, 2026):** Tova's Round 2 answers (second tab of the questionnaire doc) replace the matching Provisional decisions rows, marked *Round 2*. Questions she left blank stay provisional.
+
 > **v2.1 changes (Oct 28, 2026, Elad):** the home page becomes a real home page, not a landing page; Tova's questionnaire answers win where they differ from this doc. Changes are marked *v2.1* below and logged in `docs/decisions.md`.
 
 > Retrieved via the Google Drive connector on 2026-10-28 (the direct `export?format=md` URL is blocked by this build environment's network policy). Google's `\#` escapes have been normalised to plain `#`.
@@ -220,14 +222,14 @@ These working answers let the build start now. Each one stands until Tova answer
 
 | Topic | Working answer for the build |
 | :-: | :-: |
-| Offerings order | 360 Assessment, Tova's Table, Retreats, Journal, Talks and workshops, the book. The menu follows this order |
-| 360 Assessment | Online: a short questionnaire across the six areas, a 60-minute Zoom session, and a written plan for the next month. No price shown. Launches as "coming soon" with an interest sign-up; the free 20-minute Zoom chat is bookable from day one |
-| February retreat | "Restoration", a 24-hour retreat in Maryland, late February. The Retreats page shows a short summary and links to its own website (placeholder link until it is live), with an interest sign-up for future retreats |
-| Tova's Table | In-person small-group classes; the page states the location. Visitors request a place with preferred dates and Tova confirms by email. An "online classes" interest vote tests demand |
-| Mailing list | MailerLite free plan, double opt-in; the welcome email delivers the gift |
-| Free gift | "A Seat at the Table" recipe PDF, with placeholder recipes until Tova sends hers |
-| Journal | Tova posts herself through the browser editor; Elad seeds three starter posts from her material |
-| Three words | Welcomed, nourished, whole |
+| Offerings order | 360 Assessment, Tova's Table, Retreats, Journal, Talks and workshops, the book. The menu follows this order. *Round 2:* ranking question left blank; still provisional |
+| 360 Assessment | *Round 2:* three hours, in person, looking at all aspects of wellness (diet, exercise, sleep, work, relationships, self-awareness). Includes a homemade meal, golden milk and a hibiscus mocktail, and ends with a report with clear recommendations. Price and start date still open, so the site describes it and invites people to hear first through the mailing list (no "coming soon" label). The free 20-minute Zoom chat stays hidden until Calendly is set up |
+| February retreat | *Round 2:* the retreat has its own website; our site shows a short summary and links to it once it is live (no placeholder link). Name "Restoration" and exact dates to confirm |
+| Tova's Table | *Round 2:* in person, in Tova's kitchen, with several optional menus. Still open: the town to state as the location, how people sign up, price. Until then, visitors join the list to hear about the next classes |
+| Mailing list | *Round 2:* Tova has no tool yet, so MailerLite free plan, double opt-in; the welcome email delivers the gift |
+| Free gift | *Round 2:* a recipe and a short guided meditation recording by Tova |
+| Journal | *Round 2:* Tova sends recipes and poems to Elad, who posts them. Decap CMS becomes optional, not a launch requirement |
+| Three words | *Round 2:* curiosity, trust, hopefulness |
 | Headline | "Come to the table. Leave more whole." |
 | What not to claim | No therapy, diagnosis, or medical, dietetic or exercise treatment; no promised outcomes. Footer note: Tova is a psychologist by training and does not offer psychotherapy or medical advice through this site |
 | Signature features | All included. The voice hello and handwriting use placeholders until recorded and scanned |
@@ -240,7 +242,7 @@ These working answers let the build start now. Each one stands until Tova answer
 | Home centerpiece (Claude's pick, not Tova's) | A day in a life. Alternatives Tova can switch to: a turnable 3D seated figure with six glowing points, or a drawn tree whose six branches open as you explore |
 | Wisdom lines (Claude's drafts) | The examples in A day in a life stay as drafts until Tova approves or rewrites each one |
 | Listening forms at launch | *v2.1:* all three ship at launch (Tova: "all of these sound amazing"), each on its own page, so the home page still has one form |
-| Photos | *v2.1:* Tova's own photos wherever we have them (from her Instagram for now; originals needed). Home uses a food photo until she sends a portrait |
+| Photos and testimonials | *Round 2:* Tova will send favorite photos, the logo and testimonials later. *v2.1:* Tova's own photos wherever we have them (from her Instagram for now; originals needed). Home uses a food photo until she sends a portrait |
 
 ## Notes for the builder
 

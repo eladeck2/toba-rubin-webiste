@@ -15,7 +15,10 @@ export const site = {
   locale: 'en',
 };
 
-/** Provisional: Tova picks from the candidates in the design doc. */
+/**
+ * Round 2: the three words visitors should feel are curiosity, trust and hopefulness.
+ * Headline is still provisional: Tova picks from the candidates in the design doc.
+ */
 export const home = {
   headline: 'Come to the table. Leave more whole.',
   headlineCandidates: [
@@ -73,7 +76,8 @@ export const footerLinks: { label: string; href: string; ready: boolean }[] = [
 export const signup = {
   provider: 'netlify' as 'netlify' | 'mailerlite',
   formName: 'join-the-table',
-  giftName: 'A Seat at the Table',
+  /** Round 2: a recipe and a meditation recording (Tova records it; no tool chosen yet, MailerLite recommended). */
+  gift: 'a favorite recipe and a short guided meditation I recorded for you',
   privacyLine: 'One letter a month. Unsubscribe anytime. Your address stays with me.',
 };
 

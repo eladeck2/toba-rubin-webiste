@@ -65,6 +65,8 @@ const offerings = defineCollection({
       href: z.string().optional(),
       /** An outside link, e.g. the book listing or the retreat's own site. */
       external: z.object({ label: z.string(), url: z.string().url() }).optional(),
+      /** Text link to the sign-up, for offers that open to the list first. */
+      invite: z.string().optional(),
       visible: z.boolean().default(true),
       approved: z.boolean().default(false),
     }),

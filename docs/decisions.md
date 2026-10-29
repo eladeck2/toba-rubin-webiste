@@ -19,9 +19,17 @@ These come from one collage of Tova's Instagram grid, so each is only about 500 
 | `acorn-squash-egg.jpg`, `berry-smoothie-bowl.jpg`, `pumpkin-doughnuts.jpg` | Journal starter recipes |
 | `dessert-plate.jpg`, `chocolate-cake.jpg` | Journal, Tova's Table gallery |
 
+## Round 2 (Oct 29, 2026)
+
+Tova's answers are in the second tab of "Tova's new website: a few questions before we build". They now drive the 360 Assessment, Tova's Table, the retreat link, the free gift (recipe + meditation), who posts the Journal (Elad), and the three words (curiosity, trust, hopefulness). See the *Round 2* rows in `docs/design.md`.
+
 ## Still open for Tova
 
-- Her ranking of the offerings (the menu order is a guess)
+- Her ranking of the offerings (left blank in Round 2; the menu order is a guess)
+- 360 Assessment: price, where it happens, when the first dates open, and whether the free 20-minute Zoom chat comes first
+- Tova's Table: the town, how people sign up, price
+- Restoration: confirm the name and exact dates; the retreat site's address once live
+- What the site must not claim (left blank twice; we keep the draft footer note)
 - Whether the six areas may follow the day's order (Food, Movement, Purpose, Mental wellness, Relationships, Sleep) or her listed order
 - Whether she wants the "Play the garden" sound (she wasn't asked about sound for Garden kitchen)
 - A portrait of her at the table, the logo file, and original photo files

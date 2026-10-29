@@ -22,14 +22,20 @@ const items = (await getCollection('offerings'))
     <header class="section__head">
       <p class="eyebrow section__eyebrow">What I offer</p>
       <h2 class="section__title" id="ways-title">Ways to join me</h2>
-      <p class="section__lede">Cook with me, rest with me, or bring me to your group. It all starts with good food and real conversation.</p>
+      <p class="section__lede">Look at your whole life with me, cook with me, or rest with me. It all starts with good food and real conversation.</p>
     </header>
 
     <ul class="offerings__list">
       {items.map((o) => {
         const d = o.data;
         const Scene = d.scene ? scenes[d.scene] : null;
-        const link = isReady(d.href) ? { href: d.href!, label: `More about ${d.title}`, external: false } : d.external ? { href: d.external.url, label: d.external.label, external: true } : null;
+        const link = isReady(d.href)
+          ? { href: d.href!, label: `More about ${d.title}`, external: false }
+          : d.external
+            ? { href: d.external.url, label: d.external.label, external: true }
+            : d.invite
+              ? { href: '#join', label: d.invite, external: false }
+              : null;
         return (
           <li class="offering">
             <div class="offering__media photo" aria-hidden={d.photo ? undefined : 'true'}>

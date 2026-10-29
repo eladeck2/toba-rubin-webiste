@@ -23,7 +23,7 @@ I’m Tova Rubin. For twenty years I worked as a clinical psychologist in privat
 
 I listened to people carry stress, worry, grief and hope. Again and again I saw how much the basics shape how we feel: what we eat, how we move, how we sleep, and who we share our lives with.
 
-So I trained as a plant-based chef. Today I bring both parts of my life to one table. I teach cooking classes, lead retreats, give talks and write.
+So I trained as a plant-based chef. Today I bring both parts of my life to one table. I offer the 360 Assessment, teach cooking classes, lead retreats, give talks and write.
 
 ## The 360 view
 
