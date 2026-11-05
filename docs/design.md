@@ -2,6 +2,8 @@
 
 Oct 28, 2026 · Elad
 
+> **v2.3 (Nov 5, 2026):** Tova's Round 3 answers change the site's main job to filling her offerings (book a free 30-minute call), make the audience local (North Bethesda), and set the offering order. The Google Doc carries the full v2.3 text; see also `docs/decisions.md`.
+
 > **v2.2 (Oct 29, 2026):** Tova's Round 2 answers (second tab of the questionnaire doc) replace the matching Provisional decisions rows, marked *Round 2*. Questions she left blank stay provisional.
 
 > **v2.1 changes (Oct 28, 2026, Elad):** the home page becomes a real home page, not a landing page; Tova's questionnaire answers win where they differ from this doc. Changes are marked *v2.1* below and logged in `docs/decisions.md`.

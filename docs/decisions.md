@@ -23,6 +23,10 @@ These come from one collage of Tova's Instagram grid, so each is only about 500 
 
 Tova's answers are in the second tab of "Tova's new website: a few questions before we build". They now drive the 360 Assessment, Tova's Table, the retreat link, the free gift (recipe + meditation), who posts the Journal (Elad), and the three words (curiosity, trust, hopefulness). See the *Round 2* rows in `docs/design.md`.
 
+## Round 3 (Nov 5, 2026)
+
+The site's job is to fill her offerings, so the main action everywhere is "Book a free 30-minute call" (Contact page); the mailing list is the quiet second option. Local only (North Bethesda, in person). Offerings follow her ranking. 360 Assessment: $300/hr, home office, free 30-minute Zoom first. Tova's Table: private parties at Pike & Rose. Restoration: Feb 26-27, 2027. Footer disclaimer deleted. GWU and hospice roles are past. Meditation is part of the work, not its own offering. Round 4 (fourth tab) covers launch needs.
+
 ## Still open for Tova
 
 - Her ranking of the offerings (left blank in Round 2; the menu order is a guess)
