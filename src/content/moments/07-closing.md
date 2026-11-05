@@ -2,6 +2,7 @@
 # PENDING TOVA'S APPROVAL: wisdom line is a draft from the design doc, verbatim.
 order: 7
 kind: closing
+time: "11:00 pm"
 title: Under the stars
 area: Invitation
 scene: chair

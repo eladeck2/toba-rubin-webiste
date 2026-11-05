@@ -15,6 +15,8 @@ const moments = defineCollection({
   schema: z.object({
     order: z.number(),
     kind: z.enum(['opening', 'moment', 'closing']).default('moment'),
+    /** Clock time shown on the day's timeline, e.g. "7:30 am". */
+    time: z.string().optional(),
     /** Scene name from the doc, e.g. "Morning kitchen" */
     title: z.string(),
     /** 360 area, e.g. "Food". Opening/closing use "Welcome"/"Invitation". */
@@ -67,6 +69,12 @@ const offerings = defineCollection({
       external: z.object({ label: z.string(), url: z.string().url() }).optional(),
       /** Text link to the sign-up, for offers that open to the list first. */
       invite: z.string().optional(),
+      /** The offering's next step, usually the contact form with a topic chosen. */
+      cta: z.object({ label: z.string(), href: z.string() }).optional(),
+      /** Short facts shown with the featured offering (where, fee, first step). */
+      facts: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
+      /** The first offering in Tova's ranking gets more room. */
+      featured: z.boolean().default(false),
       visible: z.boolean().default(true),
       approved: z.boolean().default(false),
     }),
@@ -88,4 +96,30 @@ const pages = defineCollection({
     }),
 });
 
-export const collections = { moments, offerings, pages };
+/**
+ * Written by Tova in the editor at /admin (Decap CMS). Images live in
+ * public/uploads, so they are plain paths rather than optimized imports.
+ */
+const journal = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/journal' }),
+  schema: z.object({
+    title: z.string(),
+    kind: z.enum(['Poem', 'Recipe', 'Reflection']),
+    date: z.coerce.date(),
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
+    published: z.boolean().default(true),
+  }),
+});
+
+const gallery = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/gallery' }),
+  schema: z.object({
+    image: z.string(),
+    caption: z.string(),
+    category: z.enum(['food', 'table', 'retreats', 'assessment', 'talks', 'tova', 'travels']),
+    featured: z.boolean().default(false),
+  }),
+});
+
+export const collections = { moments, offerings, pages, journal, gallery };

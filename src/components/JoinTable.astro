@@ -1,7 +1,12 @@
 ---
+/**
+ * The closing invitation under the night sky. Round 3: the site's job is to
+ * fill Tova's offerings, so the primary action is a free call; the monthly
+ * letter is the quiet second option for people who aren't ready yet.
+ */
 import { getEntry } from 'astro:content';
 import Chair from './scenes/Chair.astro';
-import { signup, footerLinks } from '../config/site';
+import { signup, contact, footerLinks } from '../config/site';
 
 const closing = await getEntry('moments', '07-closing');
 // PENDING TOVA'S APPROVAL: "There's a seat for you." comes verbatim from the closing moment.
@@ -16,14 +21,13 @@ const privacy = footerLinks.find((l) => l.href === '/privacy/' && l.ready);
     </div>
 
     <div class="join__text">
-      <p class="eyebrow join__eyebrow">Under the stars</p>
       <h2 class="join__title" id="join-title">{heading}</h2>
       <p class="join__lede">
-        A monthly letter from my kitchen: one recipe, one reflection, one small thing to try.
-        Join now and I’ll send you {signup.gift}.
+        Start with a free 30-minute call. Tell me what you’re carrying, and we’ll find the right place to begin.
       </p>
+      <a class="btn join__cta" href={contact.href} data-primary-cta>{contact.cta}</a>
 
-      <div class="join__form-wrap" data-join-wrap>
+      <div class="join__letter" data-join-wrap>
         <form
           class="join__form"
           name={signup.formName}
@@ -37,7 +41,7 @@ const privacy = footerLinks.find((l) => l.href === '/privacy/' && l.ready);
           <p class="visually-hidden" aria-hidden="true">
             <label>Leave this empty <input name="company" tabindex="-1" autocomplete="off" /></label>
           </p>
-          <label class="join__label" for="join-email">Your email</label>
+          <label class="join__label" for="join-email">Not ready yet? Get my monthly letter, and I’ll send you {signup.gift}.</label>
           <div class="join__row">
             <input
               class="join__input"
@@ -46,10 +50,11 @@ const privacy = footerLinks.find((l) => l.href === '/privacy/' && l.ready);
               name="email"
               inputmode="email"
               autocomplete="email"
+              placeholder="Your email"
               required
               aria-describedby="join-privacy"
             />
-            <button class="btn join__btn" type="submit">Join the table</button>
+            <button class="join__send" type="submit">Send me the letter</button>
           </div>
           <p class="join__error" id="join-error" role="alert" hidden></p>
           <p class="join__privacy" id="join-privacy">
@@ -108,41 +113,54 @@ const privacy = footerLinks.find((l) => l.href === '/privacy/' && l.ready);
   .join__art { max-width: 30rem; width: 100%; justify-self: center; --paper: #1A1F30; }
   .join__art :global(svg) { width: 100%; height: auto; }
 
-  .join__text { display: grid; gap: var(--space-6); max-width: 34rem; }
-  .join__eyebrow { color: var(--teal-text); }
+  .join__text { display: grid; gap: var(--space-6); justify-items: start; max-width: 34rem; }
   .join__title { font-size: var(--step-h2); font-weight: 360; letter-spacing: -0.02em; }
-  .join__lede { color: var(--ink-soft); font-size: var(--step-body); max-width: 40ch; }
-  .join__lede em { color: var(--ink); }
+  .join__lede { color: var(--ink-soft); font-size: var(--step-lede); line-height: 1.5; max-width: 34ch; }
+  .join__cta { margin-top: var(--space-2); }
 
+  /* The quiet second path */
+  .join__letter { width: 100%; margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--line); }
   .join__form { display: grid; gap: var(--space-3); }
-  .join__label { font-weight: 600; font-size: var(--step-small); }
-  .join__row { display: grid; gap: var(--space-3); }
-  @media (min-width: 520px) {
-    .join__row { grid-template-columns: minmax(0, 1fr) auto; }
-  }
+  .join__label { font-size: var(--step-small); color: var(--ink-soft); max-width: 44ch; }
+  .join__row { display: grid; gap: var(--space-2); }
+  @media (min-width: 520px) { .join__row { grid-template-columns: minmax(0, 1fr) auto; } }
   .join__input {
-    min-height: 52px;
+    min-height: 48px;
     width: 100%;
-    padding: 0 1.25rem;
+    padding: 0 1.125rem;
     border-radius: var(--radius-pill);
-    border: 1px solid rgb(241 232 220 / 0.32);
-    background: rgb(255 255 255 / 0.06);
+    border: 1px solid rgb(241 232 220 / 0.28);
+    background: rgb(255 255 255 / 0.05);
     color: var(--ink);
     font: inherit;
-    font-size: 1.0625rem;
+    font-size: 1rem;
     transition: border-color var(--dur-press) var(--ease-out), background-color var(--dur-press) var(--ease-out);
   }
-  .join__input:hover { border-color: rgb(241 232 220 / 0.5); }
-  .join__input:focus { outline: 3px solid var(--teal); outline-offset: 2px; border-color: transparent; background: rgb(255 255 255 / 0.1); }
+  .join__input::placeholder { color: rgb(195 187 198 / 0.85); }
+  .join__input:hover { border-color: rgb(241 232 220 / 0.45); }
+  .join__input:focus { outline: 3px solid var(--teal); outline-offset: 2px; border-color: transparent; background: rgb(255 255 255 / 0.09); }
   .join__input[aria-invalid='true'] { border-color: #F2A18A; }
-  .join__btn { min-height: 52px; }
+  .join__send {
+    min-height: 48px;
+    padding: 0 1.25rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgb(241 232 220 / 0.4);
+    background: transparent;
+    color: var(--ink);
+    font: 600 0.9375rem/1 var(--font-body);
+    cursor: pointer;
+    transition: background-color var(--dur-press) var(--ease-out), border-color var(--dur-press) var(--ease-out);
+  }
+  .join__send:hover { background: rgb(255 255 255 / 0.08); border-color: rgb(241 232 220 / 0.7); }
+  .join__send:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+  .join__send:disabled { opacity: 0.6; cursor: progress; }
   .join__error { color: #F6B7A4; font-size: var(--step-small); }
-  .join__privacy { font-size: 0.875rem; color: var(--ink-soft); }
+  .join__privacy { font-size: 0.8125rem; color: var(--ink-soft); }
   .join__privacy a { color: var(--teal-text); }
 
   .join__thanks { display: grid; gap: var(--space-3); justify-items: start; }
-  .join__thanks-art { width: 9rem; height: auto; }
-  .join__thanks-title { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); font-weight: 380; }
+  .join__thanks-art { width: 8rem; height: auto; }
+  .join__thanks-title { font-size: clamp(1.375rem, 1.15rem + 1vw, 1.75rem); font-weight: 380; }
   .join__thanks-title:focus { outline: none; }
   .join__thanks[data-show] { animation: thanks-in var(--dur-enter) var(--ease-enter); }
   @keyframes thanks-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -175,7 +193,7 @@ const privacy = footerLinks.find((l) => l.href === '/privacy/' && l.ready);
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!valid()) {
-        show(input.value.trim() ? 'That email doesn’t look quite right. Could you check it?' : 'Please add your email so I can save your seat.');
+        show(input.value.trim() ? 'That email doesn’t look quite right. Could you check it?' : 'Please add your email so I can send the letter.');
         input.focus();
         return;
       }
@@ -190,7 +208,7 @@ const privacy = footerLinks.find((l) => l.href === '/privacy/' && l.ready);
         thanks.toggleAttribute('data-show', true);
         thanksTitle.focus();
       } catch {
-        show('Something went wrong on my side. Please try again in a moment.');
+        show('That didn’t go through. Please try again in a moment.');
       } finally {
         button.disabled = false;
       }

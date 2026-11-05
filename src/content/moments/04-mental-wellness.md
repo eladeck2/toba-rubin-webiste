@@ -1,6 +1,7 @@
 ---
 # PENDING TOVA'S APPROVAL: wisdom line is a draft from the design doc, verbatim.
 order: 4
+time: "4:00 pm"
 title: Afternoon pause
 area: Mental wellness
 scene: tea

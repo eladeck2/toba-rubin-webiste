@@ -16,11 +16,10 @@ const about = await getEntry('pages', 'about');
       </figure>
     )}
     <div class="meet__text">
-      <p class="eyebrow section__eyebrow">Meet Tova</p>
       <h2 class="section__title" id="meet-title">{about?.data.heading}</h2>
       {/* PENDING TOVA'S APPROVAL */}
-      <p>For twenty years I worked as a clinical psychologist in the Washington, DC area. I saw how much food, rest and connection shape the way we feel.</p>
-      <p>Today I’m a plant-based chef. I bring the same care to the kitchen table, where good conversations start.</p>
+      <p>For twenty years I worked as a clinical psychologist in the Washington, DC area, helping people with their minds. What we rarely touched was self-care: how we eat, move and rest.</p>
+      <p>So I became a plant-powered chef. Now I bring mind and body to one table, with joy and depth.</p>
       <ul class="meet__facts">
         {home.proof.map((item) => <li><span set:html={item} /></li>)}
       </ul>

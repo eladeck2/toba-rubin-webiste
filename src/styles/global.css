@@ -313,3 +313,13 @@ html:not(.js) [data-garden] { display: none; }
 .text-link::after { content: ' →'; }
 .photo { border-radius: var(--radius-card); overflow: hidden; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
 .photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.94) sepia(0.06); }
+
+/* Browser surfaces carry the palette too */
+:root {
+  caret-color: var(--terracotta);
+  accent-color: var(--teal-text);
+  scrollbar-color: color-mix(in srgb, var(--ink) 28%, transparent) transparent;
+  scrollbar-width: thin;
+}
+input, textarea, select { caret-color: var(--terracotta); }
+::placeholder { color: color-mix(in srgb, var(--ink-soft) 85%, transparent); opacity: 1; }

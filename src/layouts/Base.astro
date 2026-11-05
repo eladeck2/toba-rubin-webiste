@@ -38,7 +38,10 @@ const canonical = new URL(Astro.url.pathname, site.url);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      if (/(invite|recovery|confirmation|email_change)_token=/.test(location.hash)) location.replace('/admin/' + location.hash);
+    </script>
     <ClientRouter fallback="swap" />
   </head>
   <body>

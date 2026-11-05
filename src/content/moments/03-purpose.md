@@ -1,6 +1,7 @@
 ---
 # PENDING TOVA'S APPROVAL: wisdom line is a draft from the design doc, verbatim.
 order: 3
+time: "12:30 pm"
 title: Midday work
 area: Purpose
 scene: desk

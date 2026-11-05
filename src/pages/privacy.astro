@@ -1,0 +1,41 @@
+---
+/* PENDING TOVA'S APPROVAL. Plain-language privacy notice for the two forms. */
+import Base from '../layouts/Base.astro';
+import { contact } from '../config/site';
+---
+
+<Base title="Privacy" description="How Tova Rubin’s website handles the details you share.">
+  <article class="privacy">
+    <h1>Privacy</h1>
+    <p class="privacy__lede">This site asks for very little, and keeps it simple.</p>
+
+    <h2>What I collect</h2>
+    <p>When you send a note, I receive your name, your email, and anything else you choose to write. When you ask for my monthly letter, I receive your email address.</p>
+
+    <h2>How I use it</h2>
+    <p>I use your details only to reply to you, and to send the letter if you asked for it. I never sell or share them. You can unsubscribe from the letter at any time with one click.</p>
+
+    <h2>Where it is kept</h2>
+    <p>Notes from the contact form are delivered to me through the site’s host, Netlify. The monthly letter is sent through an email service. Both keep your details safe and use them only on my behalf.</p>
+
+    <h2>Health details</h2>
+    <p>Please don’t send private health information through the site. We can talk about what matters to you on our call.</p>
+
+    <h2>Questions</h2>
+    <p>Write to me at <a href={`mailto:${contact.email}`}>{contact.email}</a> and I’ll answer, or remove your details on request.</p>
+  </article>
+</Base>
+
+<style>
+  .privacy {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: calc(var(--header-h) + clamp(2.5rem, 7vw, 6rem)) var(--gutter) var(--section-pad);
+    display: grid;
+    gap: var(--space-4);
+  }
+  .privacy h1 { font-size: var(--step-title); font-weight: 360; letter-spacing: -0.02em; }
+  .privacy__lede { font-size: var(--step-lede); color: var(--ink-soft); margin-bottom: var(--space-4); }
+  .privacy h2 { font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem); font-weight: 400; margin-top: var(--space-6); }
+  .privacy p { max-width: var(--measure); color: var(--ink-soft); }
+</style>

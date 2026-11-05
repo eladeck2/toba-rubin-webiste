@@ -1,0 +1,226 @@
+---
+import Base from '../layouts/Base.astro';
+import { contact, footerLinks } from '../config/site';
+const privacy = footerLinks.find((l) => l.href === '/privacy/' && l.ready);
+---
+
+<Base title="Let’s talk" description="Book a free 30-minute call with Dr. Tova Rubin about the 360 Assessment, a talk or workshop, a private cooking party or the Restoration retreat.">
+  <section class="contact">
+    <div class="contact__inner">
+      <div class="contact__intro">
+        <h1 class="contact__title">Let’s talk</h1>
+        <p class="contact__lede">Every way of working together starts with a free 30-minute call. Tell me a little about you, and I’ll write back to find a time.</p>
+
+        <ol class="contact__steps">
+          <li><span><strong>You send a note</strong> with what you’d like to explore.</span></li>
+          <li><span><strong>I write back</strong> to find a time that suits us both.</span></li>
+          <li><span><strong>We talk for 30 minutes</strong> on Zoom. There’s no cost and no pressure.</span></li>
+        </ol>
+
+        <div class="contact__direct">
+          <p>Prefer email? Write to me at<br /><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+          <p>Based in {contact.area}</p>
+        </div>
+      </div>
+
+      <div class="contact__panel">
+        <form
+          class="contact__form"
+          name={contact.formName}
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="company"
+          data-contact-form
+          novalidate
+        >
+          <input type="hidden" name="form-name" value={contact.formName} />
+          <p class="visually-hidden" aria-hidden="true">
+            <label>Leave this empty <input name="company" tabindex="-1" autocomplete="off" /></label>
+          </p>
+
+          <fieldset class="topics">
+            <legend>What would you like to talk about?</legend>
+            <div class="topics__list">
+              {contact.topics.map((t, i) => (
+                <label class="topic">
+                  <input type="radio" name="topic" value={t.label} data-topic={t.id} checked={i === 0} />
+                  <span>{t.label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="c-name">Your name</label>
+            <input id="c-name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="c-email">Email</label>
+            <input id="c-email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="c-email-error" />
+            <p class="field__error" id="c-email-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="c-phone">Phone <span class="field__optional">(optional)</span></label>
+            <input id="c-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="c-message">Anything you’d like me to know <span class="field__optional">(optional)</span></label>
+            <textarea id="c-message" name="message" rows="4" aria-describedby="c-note"></textarea>
+            <p class="field__hint" id="c-note">For a party or an event, a date and group size help. Please keep private health details for our call.</p>
+          </div>
+
+          <button class="btn contact__submit" type="submit" data-primary-cta>Send</button>
+          <p class="contact__error" role="alert" hidden data-contact-error></p>
+          <p class="contact__privacy">I read every note myself and never share your details.{privacy && <> <a href={privacy.href}>Privacy</a></>}</p>
+        </form>
+
+        <div class="contact__thanks" hidden data-contact-thanks>
+          <svg class="art contact__thanks-art" viewBox="0 0 200 120" aria-hidden="true">
+            <g class="a-q steam"><path d="M88 52 C82 42 94 36 88 24" /><path d="M100 50 C95 39 106 32 101 18" /><path d="M112 52 C107 42 118 36 113 26" /></g>
+            <g class="a-t"><path d="M60 70 C60 62 140 62 140 70 C140 78 60 78 60 70 Z" /><path d="M60 71 C63 92 80 102 100 102 C120 102 137 92 140 71" /></g>
+            <g class="a-i"><path d="M30 106 C80 104 120 107 170 105" /></g>
+          </svg>
+          <h2 class="contact__thanks-title" tabindex="-1" data-contact-thanks-title>Thank you. Your note is on its way.</h2>
+          <p>I’ll write back soon to find a time for our call.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact { padding: calc(var(--header-h) + clamp(2.5rem, 7vw, 6rem)) var(--gutter) var(--section-pad); }
+  .contact__inner { max-width: 72rem; margin: 0 auto; display: grid; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  @media (min-width: 960px) { .contact__inner { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); } }
+
+  .contact__intro { display: grid; gap: var(--space-6); max-width: 30rem; }
+  .contact__title { font-size: var(--step-title); font-weight: 360; letter-spacing: -0.02em; }
+  .contact__lede { font-size: var(--step-lede); line-height: 1.5; color: var(--ink-soft); }
+  .contact__steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: var(--space-4); }
+  .contact__steps li { counter-increment: step; display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: var(--space-3); color: var(--ink-soft); }
+  .contact__steps li::before {
+    content: counter(step);
+    display: grid; place-items: center;
+    width: 1.75rem; height: 1.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    font: 600 0.8125rem/1 var(--font-body);
+    color: var(--teal-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .contact__steps strong { color: var(--ink); font-weight: 600; }
+  .contact__direct { display: grid; gap: var(--space-2); padding-top: var(--space-4); border-top: 1px solid var(--line); font-size: var(--step-small); color: var(--ink-soft); }
+  .contact__direct a { font-weight: 600; font-size: 1rem; }
+
+  .contact__panel {
+    background: var(--surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .contact__form { display: grid; gap: var(--space-6); }
+
+  .topics { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .topics legend { padding: 0; margin-bottom: var(--space-3); font-weight: 600; }
+  .topics__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .topic { position: relative; }
+  .topic input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .topic span {
+    display: inline-flex; align-items: center;
+    min-height: 44px; padding: 0 1rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--line);
+    font-size: 0.9375rem;
+    transition: background-color var(--dur-press) var(--ease-out), border-color var(--dur-press) var(--ease-out), color var(--dur-press) var(--ease-out);
+  }
+  .topic:hover span { border-color: color-mix(in srgb, var(--teal) 55%, transparent); }
+  .topic input:checked + span { background: color-mix(in srgb, var(--teal) 14%, var(--surface)); border-color: var(--teal-text); color: var(--ink); font-weight: 600; }
+  .topic input:focus-visible + span { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+  .field { display: grid; gap: var(--space-2); }
+  .field label { font-weight: 600; font-size: 0.9375rem; }
+  .field__optional { font-weight: 400; color: var(--ink-soft); }
+  .field input, .field textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    font-size: 1rem;
+    transition: border-color var(--dur-press) var(--ease-out);
+  }
+  .field textarea { resize: vertical; min-height: 7rem; }
+  .field input:hover, .field textarea:hover { border-color: color-mix(in srgb, var(--ink) 40%, transparent); }
+  .field input:focus, .field textarea:focus { outline: 3px solid var(--teal); outline-offset: 2px; border-color: transparent; }
+  .field input[aria-invalid='true'] { border-color: var(--terracotta-text); }
+  .field__hint { font-size: var(--step-small); color: var(--ink-soft); }
+  .field__error, .contact__error { font-size: var(--step-small); color: var(--terracotta-text); }
+  .contact__submit { justify-self: start; min-width: 9rem; }
+  .contact__submit:disabled { opacity: 0.7; cursor: progress; transform: none; box-shadow: none; }
+  .contact__privacy { font-size: 0.8125rem; color: var(--ink-soft); }
+
+  .contact__thanks { display: grid; gap: var(--space-3); justify-items: start; padding: var(--space-6) 0; }
+  .contact__thanks-art { width: 8rem; height: auto; }
+  .contact__thanks-title { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); font-weight: 380; }
+  .contact__thanks-title:focus { outline: none; }
+</style>
+
+<script>
+  function initContact() {
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = '1';
+
+    // Preselect the topic the visitor came from (e.g. /contact/?topic=party).
+    const want = new URLSearchParams(location.search).get('topic');
+    const match = want && form.querySelector<HTMLInputElement>(`input[data-topic="${CSS.escape(want)}"]`);
+    if (match) match.checked = true;
+
+    const name = form.querySelector<HTMLInputElement>('#c-name')!;
+    const email = form.querySelector<HTMLInputElement>('#c-email')!;
+    const emailError = form.querySelector<HTMLElement>('#c-email-error')!;
+    const error = form.querySelector<HTMLElement>('[data-contact-error]')!;
+    const thanks = document.querySelector<HTMLElement>('[data-contact-thanks]')!;
+    const thanksTitle = document.querySelector<HTMLElement>('[data-contact-thanks-title]')!;
+    const validEmail = () => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim());
+
+    const setEmailError = (msg: string) => {
+      emailError.textContent = msg;
+      emailError.hidden = !msg;
+      email.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    };
+    email.addEventListener('blur', () => {
+      if (email.value.trim() && !validEmail()) setEmailError('That email doesn’t look quite right. Could you check it?');
+    });
+    email.addEventListener('input', () => { if (!emailError.hidden && validEmail()) setEmailError(''); });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      error.hidden = true;
+      if (!name.value.trim()) { name.setAttribute('aria-invalid', 'true'); name.focus(); error.textContent = 'Please add your name.'; error.hidden = false; return; }
+      name.removeAttribute('aria-invalid');
+      if (!validEmail()) { setEmailError(email.value.trim() ? 'That email doesn’t look quite right. Could you check it?' : 'Please add your email so I can write back.'); email.focus(); return; }
+      const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      try {
+        const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString();
+        const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+        if (!res.ok) throw new Error(String(res.status));
+        form.hidden = true;
+        thanks.hidden = false;
+        thanksTitle.focus();
+      } catch {
+        error.textContent = 'That didn’t go through. Please try again, or email me directly.';
+        error.hidden = false;
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Send';
+      }
+    });
+  }
+  document.addEventListener('astro:page-load', initContact);
+</script>

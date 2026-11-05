@@ -1,6 +1,7 @@
 ---
 # PENDING TOVA'S APPROVAL: wisdom line is a draft from the design doc, verbatim.
 order: 1
+time: "7:30 am"
 title: Morning kitchen
 area: Food
 scene: kitchen

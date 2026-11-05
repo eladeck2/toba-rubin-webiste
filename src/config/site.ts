@@ -27,7 +27,7 @@ export const home = {
     'Twenty years of listening. Now I cook, too.',
   ],
   /** Says plainly who Tova is and what the site is for. */
-  intro: 'I’m Tova Rubin, a psychologist and plant-based chef. I help you eat well and live more fully, from your plate to your sleep.',
+  intro: 'I’m Tova Rubin, a psychologist and plant-powered chef in North Bethesda, Maryland. I help you eat well and live with more balance, joy and energy.',
   proof: [
     'Dr. Tova Rubin, PhD (Vanderbilt, with distinction)',
     '20 years as a clinical psychologist',
@@ -68,8 +68,8 @@ export function isReady(href?: string) {
 
 export const footerLinks: { label: string; href: string; ready: boolean }[] = [
   { label: 'Talks and workshops', href: '/talks/', ready: false },
-  { label: 'Contact', href: '/contact/', ready: false },
-  { label: 'Privacy', href: '/privacy/', ready: false },
+  { label: 'Contact', href: '/contact/', ready: true },
+  { label: 'Privacy', href: '/privacy/', ready: true },
 ];
 
 /** Provisional: MailerLite (double opt-in) is the destination; Netlify Forms catches sign-ups until it's connected. */
@@ -81,9 +81,28 @@ export const signup = {
   privacyLine: 'One letter a month. Unsubscribe anytime. Your address stays with me.',
 };
 
-/** Provisional legal line from "What not to claim". */
-export const disclaimer =
-  'Tova is a psychologist by training and does not offer psychotherapy or medical advice through this site.';
+/**
+ * Round 3: the site's main job is filling Tova's offerings, so every page leads
+ * to a conversation. The mailing list is the quiet second option.
+ */
+export const contact = {
+  email: 'btovarubin@gmail.com',
+  area: 'North Bethesda, Maryland',
+  cta: 'Book a free 30-minute call',
+  ctaShort: 'Book a free call',
+  href: '/contact/',
+  formName: 'contact',
+  topics: [
+    { id: '360', label: 'The 360 Assessment' },
+    { id: 'talk', label: 'A talk or workshop' },
+    { id: 'party', label: 'A private cooking party' },
+    { id: 'retreat', label: 'The Restoration retreat' },
+    { id: 'other', label: 'Something else' },
+  ],
+};
+
+/** Round 3: Tova asked to delete the footer disclaimer. Set a string to bring it back. */
+export const disclaimer: string | null = null;
 
 /**
  * Tova asked for all three listening ideas ("all of these sound amazing"), so

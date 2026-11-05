@@ -1,6 +1,6 @@
 ---
 # PENDING TOVA'S APPROVAL. Swap the link for the Amazon listing from the old site.
-order: 4
+order: 5
 title: Wisdom from the Couch
 kind: The book · 2020
 summary: Short lessons from my years in practice, on healthy boundaries, relationships and the thoughts that run us.

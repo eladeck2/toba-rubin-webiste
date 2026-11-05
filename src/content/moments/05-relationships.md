@@ -1,6 +1,7 @@
 ---
 # PENDING TOVA'S APPROVAL: wisdom line is a draft from the design doc, verbatim.
 order: 5
+time: "7:30 pm"
 title: Evening table
 area: Relationships
 scene: table

@@ -1,0 +1,59 @@
+# Tova's editor at /admin (not linked anywhere, not indexed).
+# Sign-in: Netlify Identity, invite-only. Saves go straight to the site (no review step).
+backend:
+  name: git-gateway
+  branch: main
+publish_mode: simple
+site_url: https://tova-rubin-review.netlify.app
+display_url: https://tova-rubin-review.netlify.app
+logo_url: /favicon.svg
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: journal
+    label: Journal
+    label_singular: Journal entry
+    description: Poems, recipes and reflections. Each one gets its own page in the Journal.
+    folder: src/content/journal
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: [date, title]
+    summary: "{{title}} ({{kind}})"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - name: kind
+        label: What is it?
+        widget: select
+        options: [Poem, Recipe, Reflection]
+        default: Reflection
+      - { name: date, label: Date, widget: datetime, date_format: "MMMM D, YYYY", time_format: false }
+      - { name: image, label: Photo (optional), widget: image, required: false }
+      - { name: imageAlt, label: "Describe the photo in a few words (helps people using screen readers)", widget: string, required: false }
+      - { name: body, label: Text, widget: markdown, buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list, quote] }
+      - { name: published, label: Show on the site, widget: boolean, default: true }
+
+  - name: gallery
+    label: Photos
+    label_singular: Photo
+    description: Upload a photo and choose where it belongs. The category decides which page shows it.
+    folder: src/content/gallery
+    create: true
+    slug: "{{slug}}"
+    summary: "{{caption}} · {{category}}"
+    fields:
+      - { name: image, label: Photo, widget: image }
+      - { name: caption, label: Short caption, widget: string }
+      - name: category
+        label: Where does it belong?
+        widget: select
+        options:
+          - { label: "Food and recipes", value: food }
+          - { label: "Tova's Table (classes and parties)", value: table }
+          - { label: "Retreats", value: retreats }
+          - { label: "The 360 Assessment", value: assessment }
+          - { label: "Talks and workshops", value: talks }
+          - { label: "Tova (portraits)", value: tova }
+          - { label: "Travels and India", value: travels }
+      - { name: featured, label: "Feature this photo on the home page", widget: boolean, default: false }

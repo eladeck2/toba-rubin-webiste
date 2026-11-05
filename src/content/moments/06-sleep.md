@@ -2,6 +2,7 @@
 # PENDING TOVA'S APPROVAL: wisdom line is a draft from the design doc, verbatim.
 # Needs a specific study citation before launch ("every research finding is real").
 order: 6
+time: "10:30 pm"
 title: Night
 area: Sleep
 scene: night
